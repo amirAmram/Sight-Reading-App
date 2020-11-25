@@ -1,0 +1,177 @@
+<resources>
+    <string name="app_name">SightReading</string>
+    <string name="title_activity_start_screen">StartScreen</string>
+
+
+    <string name="about">This app made especially for the people who wants to be familiar with sight reading, note reading and a little bit theory.
+        In my project I tried to  keep every thing simple so.. beginners can easily navigate throw the notes simulation and start realize how to basically read better.
+        I highly recommend to use the options figure and set the notes rang to the difficult places that you having a hard time.
+        If you fill the simulation is to easy  or to hard you can set the speed of the notes.
+        It can be that this app is not perfectly the best for you, but do not give up!  maybe try another app or something more efficient for you, and remember,
+        always get practice, practice is the best way to success! (40 hours a day ;)
+        </string>
+
+    <string name="introduction_1"> In music, a note is a symbol denoting a musical sound.
+        In English usage a note is also the sound itself.<br />
+        Notes can represent the pitch and duration of a sound in musical notation. A note can also represent a pitch class.<br />
+        Notes are the building blocks of much written music: discretizations of musical phenomena that facilitate performance, comprehension, and analysis.<br />
+    </string>
+
+    <string name="introduction_2">
+        The term note can be used in both generic and specific senses:<br />
+        one might say either "the piece 'Happy Birthday to You' begins with two notes having the same pitch", or "the piece begins with two repetitions of the same note".<br />
+        In the former case, one uses note to refer to a specific musical event; in the latter, one uses the term to refer to a class of events sharing the same pitch.<br />
+        (See also: Key signature names and translations.)<br />
+        Two notes with fundamental frequencies in a ratio equal to any integer power of two (e.g., half, twice, or four times) are perceived as very similar.<br />
+        Because of that, all notes with these kinds of relations can be grouped under the same pitch class.<br />
+    </string>
+
+    <string name="signs_intro">
+        Musical symbols are marks and symbols used since about the 13th century in musical notation of musical scores.
+        Some are used to notate pitch, tempo, metre, duration and articulation of a note or a passage of music. In some cases, symbols provide information about the form of a piece (e.g., how many repeats of a section) or about how to play the note (e.g., with violin family instruments, a note may be bowed or plucked).
+        Some symbols are instrument-specific notation giving the performer information about which finger, hand or foot to use.
+        next I will give an explanation about critical signs:
+    </string>
+
+    <string name="lines_1">
+        Staff: The staff is the fundamental latticework of music notation,
+        on which symbols are placed. The five staff lines and four intervening spaces correspond to pitches of the diatonic scale;
+        which pitch is meant by a given line or space is defined by the clef.
+        In British usage, the word "stave" is often used.
+    </string>
+
+    <string name="lines_2">
+        Ledger or leger lines: These extend the staff to pitches that fall above or below it. Such ledger lines are placed behind the note heads,
+        and extend a small distance to each side. Multiple ledger lines can be used when necessary to notate pitches even farther above or below the staff.
+    </string>
+
+    <string name="lines_3">
+        Bar Line: These separate measures (see time signatures below for an explanation of measures). Also used for changes in time signature.
+        Bar lines are extended to connect multiple staves in certain types of music, such as for keyboard or harp,
+        and in conductor scores, but such extensions are not used for other types of music, such as vocal scores.
+    </string>
+
+    <string name="lines_4"> Double bar line, Double barline:
+        These separate two sections of music, or are placed before a change in key signature.
+    </string>
+
+    <string name="lines_5"> Bold double bar line, Bold double barline:
+        These indicate the conclusion of a movement or an entire composition.
+    </string>
+
+    <string name="lines_6"> Dotted bar line, Dotted barline:
+        Subdivides long measures of complex meter into shorter segments for ease of reading, usually according to natural rhythmic subdivisions.
+    </string>
+
+    <string name="lines_7"> Bracket:
+        These separate two sections of music, or are placed before a change in key signature.
+    </string>
+
+    <string name="lines_8"> Brace:
+        These separate two sections of music, or are placed before a change in key signature.
+    </string>
+
+    <string name="Clef_1"> G clef (Treble clef):
+        The centre of the spiral assigns the second line from the bottom to the pitch G above middle C.
+        [2] The treble clef is the most commonly encountered clef in modern notation, and is used for most modern vocal music.
+        Middle C is the first ledger line below the staff here.
+    </string>
+
+    <string name="Clef_2"> C clef (Alto, and Tenor clefs)
+        These clefs point to the line representing middle C. As illustrated here, it makes the center line on the staff middle C, and is referred to as the "alto clef". This clef is used in modern notation for the viola. While all clefs can be placed anywhere on the staff to indicate various tessitura, the C clef is most often considered a "movable" clef: it is frequently seen pointing instead to the fourth line and called a "tenor clef". This clef is used very often in music written for bassoon,
+        cello, trombone, and double bass; it replaces the bass clef when the number of ledger lines above the bass staff hinders easy reading.
+        Until the classical era, the C clef was also frequently seen pointing to other lines, mostly in vocal music,
+        but today this has been supplanted by the universal use of the treble and bass clefs. Modern editions of music from such periods generally transpose the original C clef parts to either treble (female voices),
+        octave treble (tenors), or bass clef (tenors and basses).
+        It can be occasionally seen in modern music on the third space (between the third and fourth lines),
+        in which case it has the same function as an octave treble clef. This unusual practice runs the risk of misreading, however, because the traditional function of all clefs is to identify staff lines, not spaces.
+     </string>
+
+    <string name="Clef_3">F clef (Bass clef):
+        The line between the dots in this clef denotes F below middle C.[2] Positioned here, it makes the second line from the top of the staff F below middle C, and is called a "bass clef".
+        This clef appears nearly as often as the treble clef, especially in choral music, where it represents the bass and baritone voices. Middle C is the first ledger line above the staff here.
+        In old music, particularly vocal scores, this clef is sometimes encountered centered on the third staff line, in which position it is referred to as a baritone clef;
+        this usage has essentially become obsolete.
+    </string>
+
+    <string name="Clef_4">Neutral clef:
+        Used for pitchless instruments, such as some of those used for percussion.
+        Each line can represent a specific percussion instrument within a set, such as in a drum set.
+        Two different styles of neutral clefs are pictured here.
+        It may also be drawn with a separate single-line staff for each untuned percussion instrument.
+    </string>
+
+    <string name="Clef_5"> Tablature:
+        Treble and bass clefs can also be modified by octave numbers.
+        An eight or fifteen above a clef raises the intended pitch range by one or two octaves respectively.
+        Similarly, an eight or fifteen below a clef lowers the pitch range by one or two octaves respectively.
+        A treble clef with an eight below is the most commonly used, typically used for guitar and similar instruments, as well as for tenor parts in choral music.
+            </string>
+
+    <string name="Clef_6"> Tablature:
+        For stringed instruments, such as the guitar, it is possible to notate tablature in place of ordinary notes. In this case, a TAB sign is often written instead of a clef.
+        The number of lines of the staff is not necessarily five: one line is used for each string of the instrument (so, for standard 6-stringed guitars, six lines would be used).
+        Numbers on the lines show which fret to play the string on. This TAB sign, like the percussion clef, is not a clef in the true sense, but rather a symbol employed instead of a clef.
+        Similarly, the horizontal lines do not constitute a staff in the usual sense, because the spaces between the lines in a tablature are never used.
+    </string>
+
+    <string name="notes_and_rests_1"> Musical note and rest values are not absolutely defined,
+        but are proportional in duration to all other note and rest values. The whole note is the reference value,
+        and the other notes are named (in American usage) in comparison; i.e.,
+        a quarter note is a quarter of the length of a whole note.
+    </string>
+
+    <string name="notes_and_rests_2">
+        British name / American name
+    </string>
+
+    <string name="notes_and_rests_3">
+        Octuple whole note
+    </string>
+
+    <string name="notes_and_rests_4">
+        Quadruple whole note
+    </string>
+
+    <string name="notes_and_rests_5">
+        Double whole note
+    </string>
+
+    <string name="notes_and_rests_6">
+        Whole note
+    </string>
+
+    <string name="notes_and_rests_7">
+        Half note
+    </string>
+
+    <string name="notes_and_rests_8">
+        Quarter note
+    </string>
+
+
+    <string name="notes_and_rests_9">
+        Eighth note
+    </string>
+
+    <string name="notes_and_rests_10">
+        For notes of this length and shorter, the note
+        has the same number of flags (or hooks) as the rest has branches.
+    </string>
+
+    <string name="notes_and_rests_11">
+        Sixteenth note
+    </string>
+
+    <string name="notes_and_rests_12">
+        Thirty-second note
+    </string>
+
+    <string name="notes_and_rests_13">
+        Sixty-fourth note
+    </string>
+
+    <string name="C">523</string>
+
+
+</resources>

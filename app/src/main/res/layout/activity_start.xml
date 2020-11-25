@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/start_general"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".StartActivity"
+    >
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background_music_pice"
+        android:scaleType="centerCrop"
+        android:alpha="0.5"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="42sp"
+            android:layout_gravity="center_horizontal"  />
+
+        <TextView
+            android:id="@+id/title_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="64dp"
+            android:text="Play"
+            android:textColor="#423D3D"
+            android:textSize="36sp" />
+
+
+        <TextView
+            android:id="@+id/title_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="36dp"
+            android:text="Options"
+            android:textColor="#2E2B2B"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/title_learn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="36dp"
+
+            android:text="Learn Sighs"
+            android:textColor="#474343"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/title_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="information"
+            android:layout_marginTop="36dp"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"  />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
