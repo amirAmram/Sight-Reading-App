@@ -25,6 +25,8 @@ public class StartActivity extends AppCompatActivity {
     TextView tLearnSighs;
     TextView tInfo;
 
+    TextView tTuner;
+
     Intent intent;
 
 
@@ -224,9 +226,14 @@ public class StartActivity extends AppCompatActivity {
                 });
 
 
+            }
+        });
 
-
-
+        tTuner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(StartActivity.this,Tuner.class);
+                startActivity(intent);
             }
         });
 
@@ -350,6 +357,8 @@ public class StartActivity extends AppCompatActivity {
         tOption = findViewById(R.id.title_options);
         tLearnSighs = findViewById(R.id.title_learn);
         tInfo = findViewById(R.id.title_info);
+
+        tTuner = findViewById(R.id.tuner);
     }
 
     @Override

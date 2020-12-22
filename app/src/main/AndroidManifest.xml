@@ -3,32 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sparkling.sightreading">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
+        android:appComponentFactory="whateverString"
         android:icon="@drawable/key_sharp_7"
         android:label="@string/app_name"
         android:roundIcon="@drawable/key_0"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
-        tools:replace="android:appComponentFactory"
-        android:appComponentFactory="whateverString"
-        >
+        tools:replace="android:appComponentFactory">
+        <activity android:name=".Tuner"></activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3940256099942544~3347511713" />
 
-        <activity android:name="com.sparkling.sightreading.AboutActivity" />
-        <activity android:name="com.sparkling.sightreading.InfoActivity" />
-        <activity android:name="com.sparkling.sightreading.OptionsActivity" />
-        <activity android:name="com.sparkling.sightreading.PlayActivity" />
-        <activity android:name="com.sparkling.sightreading.StartActivity" />
-        <activity android:name="com.sparkling.sightreading.MainActivity">
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".InfoActivity" />
+        <activity android:name=".OptionsActivity" />
+        <activity android:name=".PlayActivity" />
+        <activity android:name=".StartActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
