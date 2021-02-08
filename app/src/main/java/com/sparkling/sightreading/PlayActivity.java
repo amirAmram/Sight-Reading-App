@@ -1,10 +1,12 @@
 package com.sparkling.sightreading;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.AudioFormat;
@@ -26,8 +28,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,6 +42,14 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.lang.reflect.Type;
 import java.util.Random;
+
+import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.AudioEvent;
+import be.tarsos.dsp.AudioProcessor;
+import be.tarsos.dsp.io.android.AudioDispatcherFactory;
+import be.tarsos.dsp.pitch.PitchDetectionHandler;
+import be.tarsos.dsp.pitch.PitchDetectionResult;
+import be.tarsos.dsp.pitch.PitchProcessor;
 
 public class PlayActivity extends AppCompatActivity {
     private static final String TAG = "PlayActivity";
@@ -163,7 +176,43 @@ public class PlayActivity extends AppCompatActivity {
 
 
 
-
+    /**
+     *             174,  //f0
+     *             185,
+     *             196,  //g0
+     *             207,
+     *             220,  //a0
+     *             233,
+     *             246,  //b0
+     *             261,  //c1
+     *             277,
+     *             293,  //d1
+     *             311,
+     *             330,  //e1
+     *             350,  //f1
+     *             369,
+     *             392,  //g1
+     *             415,
+     *             440,  //a1
+     *             466,
+     *             494,  //b1
+     *             523,  //c2
+     *             544,
+     *             587,  //d2
+     *             622,
+     *             659,  //e2
+     *              ,  //f2
+                                                            ************             740,
+     *             784,  //g2
+     *             830,
+     *             880,  //a2
+     *             932,
+     *             987,  //b2
+     *             1047, //c3
+     *             1108,
+     *             1175, //d3
+     *             1244,
+     *             1319, //e3 */
     final int [] freq_C = new int[] {
             174,  //f0
             196,  //g0
@@ -378,6 +427,14 @@ public class PlayActivity extends AppCompatActivity {
 
     boolean outIsClicked = false;
 
+    int current_freq = -10;
+    //     ^
+    // I put -10 because the default is -1 and I wanna include
+    //      range of 3 both side --> ( -1 + 3, -1 - 3 ) so it could be -5 but I took extra
+
+    boolean VOICE_FLAGE = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -399,12 +456,16 @@ public class PlayActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title.setVisibility(View.INVISIBLE);
+                //title.setVisibility(View.INVISIBLE);
                 seek.setVisibility(View.GONE);
                 time.setVisibility(View.VISIBLE);
                 start.setVisibility(View.GONE);
                 cnt = 0;
                 time.setText(0 + "/" + amount);
+
+                permission();
+                tuner();
+
                 delay(1000);
                 time.setVisibility(View.VISIBLE);
                 index_++;
@@ -445,12 +506,15 @@ public class PlayActivity extends AppCompatActivity {
             num = r.nextInt(HighNoteControl - LowNoteControl + 1) + LowNoteControl;
         }
 
+        VOICE_FLAGE = false;
+
         doReMiFlage = num; // for the click compare
 
 
             if (16 > num && num > 4) {
                 note = findViewById(images[num]);
                 setFrequency(2, freq[num]);
+                current_freq = freq[num];
                 note.setVisibility(View.VISIBLE);
                 startTranslation(note);
             } else {
@@ -459,6 +523,7 @@ public class PlayActivity extends AppCompatActivity {
                 layoutImage.setImageResource(R.drawable.quarter_note);
                 layoutImage.setPadding(0, 0, 0, 0);
                 setFrequency(2, freq[num]);
+                current_freq = freq[num];
                 noteLayout.setVisibility(View.VISIBLE);
                 startTranslation(noteLayout);
             }
@@ -533,6 +598,7 @@ public class PlayActivity extends AppCompatActivity {
             else{temp = i + 4 ;}
             final int index = temp ;
 
+
             Notes[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -560,6 +626,8 @@ public class PlayActivity extends AppCompatActivity {
                             }
                         }
                     }
+
+
                 }
             });
         }
@@ -956,6 +1024,122 @@ public class PlayActivity extends AppCompatActivity {
         passData();
          super.onBackPressed();
 
+    }
+
+
+    /**
+     *
+     */
+
+    public void permission(){
+        ActivityCompat.requestPermissions(PlayActivity.this,
+                new String[]{Manifest.permission.RECORD_AUDIO},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Log.d(TAG, "onRequestPermissionsResult:  --------------happened!---------------");
+                    if(checkIfAlreadyhavePermission()){
+                        AudioDispatcher dispatcher =
+                                AudioDispatcherFactory.fromDefaultMicrophone(22050,1024,0);
+
+                        PitchDetectionHandler pdh = new PitchDetectionHandler() {
+                            @Override
+                            public void handlePitch(PitchDetectionResult res, AudioEvent e){
+                                final float pitchInHz = res.getPitch();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        processPitch(pitchInHz);
+                                    }
+                                });
+                            }
+                        };
+                        AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
+                        dispatcher.addAudioProcessor(pitchProcessor);
+
+                        Thread audioThread = new Thread(dispatcher, "Audio Thread");
+                        audioThread.start();
+                    }                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(PlayActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    private boolean checkIfAlreadyhavePermission() {
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void processPitch(float pitchInHz ) {
+
+        title.setText("" + pitchInHz);
+
+        //Log.d(TAG, "processPitch: " + (int)pitchInHz + " ---- " + current_freq);
+
+        if (!VOICE_FLAGE){
+            if(pitchInHz -3 < current_freq && pitchInHz + 3 > current_freq){
+                if (16 > doReMiFlage && doReMiFlage > 4) {
+                    note.setImageResource(R.drawable.star_yelllow);
+                } else {
+                    //layoutImage.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
+                    layoutImage.setPadding(0, 100, 0, 100);
+                    layoutImage.setImageResource(R.drawable.star_yelllow);
+                }
+                VOICE_FLAGE = true;
+                sum++;
+                time.setText(sum + "/" + amount);
+
+            }
+        }
+
+    }
+
+
+
+
+    public void tuner(){
+        if(checkIfAlreadyhavePermission()){
+            AudioDispatcher dispatcher =
+                    AudioDispatcherFactory.fromDefaultMicrophone(22050,1024,0);
+
+            PitchDetectionHandler pdh = new PitchDetectionHandler() {
+                @Override
+                public void handlePitch(PitchDetectionResult res, AudioEvent e){
+                    final float pitchInHz = res.getPitch();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            processPitch(pitchInHz);
+                        }
+                    });
+                }
+
+            };
+            AudioProcessor pitchProcessor = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
+            dispatcher.addAudioProcessor(pitchProcessor);
+
+            Thread audioThread = new Thread(dispatcher, "Audio Thread");
+            audioThread.start();
+        }
     }
 
 

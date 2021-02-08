@@ -16,7 +16,8 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".Tuner"></activity>
+        <activity android:name=".LevelActivity"></activity>
+        <activity android:name=".Tuner" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

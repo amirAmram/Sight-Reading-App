@@ -232,7 +232,7 @@ public class StartActivity extends AppCompatActivity {
         tTuner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent = new Intent(StartActivity.this,Tuner.class);
+                intent = new Intent(StartActivity.this,LevelActivity.class);
                 startActivity(intent);
             }
         });
