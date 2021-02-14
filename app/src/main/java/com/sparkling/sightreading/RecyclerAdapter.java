@@ -15,16 +15,44 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+
+
+    String[][] NOTES_SEQUENCE = new String[][]{
+            {
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+            },
+            {
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+                    "1 2 3 4 5 6 7 8",
+            }
+
+
+    };
+
 
     String[] sArr;
     int[] iArr;
+    int gameLevel;
     Context context;
     LayoutInflater inflater;
 
-    public RecyclerAdapter(Context context, String[] sArr,  int[] iArr ){
+    public RecyclerAdapter(Context context, String[] sArr,  int[] iArr, int gameLevel ){
         this.sArr = sArr;
         this.iArr = iArr;
+        this.gameLevel = gameLevel;
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
@@ -37,13 +65,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, final int position) {
         holder.t.setText(sArr[position]);
         holder.i.setImageResource(iArr[position]);
         holder.c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Tuner.class);
+                Intent intent = new Intent(context, PlayActivity.class);
+                intent.putExtra("NOTES_SEQUENCE", NOTES_SEQUENCE[gameLevel][position]);
                 context.startActivity(intent);
             }
         });

@@ -233,6 +233,17 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(StartActivity.this,LevelActivity.class);
+                intent.putExtra("b1",b1);
+                intent.putExtra("b2",b2);
+                intent.putExtra("b3",b3);
+                intent.putExtra("b4",b4);
+                intent.putExtra("b5",b5);
+                intent.putExtra("i1",i1);
+                intent.putExtra("s1",s1);
+                intent.putExtra("i2",i2);
+                intent.putExtra("i3",i3);
+                intent.putExtra("i4",i4);
+
                 startActivity(intent);
             }
         });

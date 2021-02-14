@@ -5,11 +5,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
 
 public class LevelActivity extends AppCompatActivity {
+
 
     RecyclerView stages_gridView;
 
@@ -79,14 +81,9 @@ public class LevelActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 makeCardsGone();
-                setStageGrid(levels_images, levels_names);
+                setStageGrid(levels_images, levels_names, 1);
             }
         });
-
-
-
-
-
 
 
 
@@ -100,12 +97,15 @@ public class LevelActivity extends AppCompatActivity {
         level_4.setVisibility(View.GONE);
     }
 
-    public void setStageGrid(int[] images, String[] names){
+    public void setStageGrid(int[] images, String[] names, int level){
         stages_gridView = findViewById(R.id.stages_grid_view);
         stages_gridView.setVisibility(View.VISIBLE);
-        adapter = new RecyclerAdapter(LevelActivity.this, names, images);
+        adapter = new RecyclerAdapter(LevelActivity.this, names, images,level);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL,false );
         stages_gridView.setLayoutManager(gridLayoutManager);
         stages_gridView.setAdapter(adapter);
     }
+
+
+
 }

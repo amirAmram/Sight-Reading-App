@@ -59,7 +59,9 @@ public class PlayActivity extends AppCompatActivity {
     public static  final String GRAPH_INDEX = "spinnerint";
 
 
-
+    String gameSeq;
+    int[] gameSequens;
+    int gameSequensIndex = 0;
     int [] freq ;
     Button [] Notes = new Button[7];
 
@@ -409,7 +411,7 @@ public class PlayActivity extends AppCompatActivity {
     boolean b5;
 
     int i1;
-    String s1;
+    String s1 = "C";
 
     int amount;
     int percent;
@@ -497,19 +499,49 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
-    public void start_notes(){
+    public void start_notes_(){
         // max value 20
         if(!outIsClicked) {
 
-        int num = r.nextInt(20);
-        if (HighNoteControl > LowNoteControl) {
-            num = r.nextInt(HighNoteControl - LowNoteControl + 1) + LowNoteControl;
+            int num = r.nextInt(20);
+            if (HighNoteControl > LowNoteControl) {
+                num = r.nextInt(HighNoteControl - LowNoteControl + 1) + LowNoteControl;
+            }
+
+            VOICE_FLAGE = false;
+            doReMiFlage = num; // for the click compare
+
+
+                if (16 > num && num > 4) {
+                    note = findViewById(images[num]);
+                    setFrequency(2, freq[num]);
+                    current_freq = freq[num];
+                    note.setVisibility(View.VISIBLE);
+                    startTranslation(note);
+                } else {
+                    noteLayout = findViewById(images[num]);
+                    layoutImage = findViewById(layoutImages[num]);
+                    layoutImage.setImageResource(R.drawable.quarter_note);
+                    layoutImage.setPadding(0, 0, 0, 0);
+                    setFrequency(2, freq[num]);
+                    current_freq = freq[num];
+                    noteLayout.setVisibility(View.VISIBLE);
+                    startTranslation(noteLayout);
+                }
+
+                isStarClicked = true;
+            cnt ++;
         }
+        if(cnt < amount && !outIsClicked){
+            timer();
+        }else{  delay(); }
+    }
 
-        VOICE_FLAGE = false;
-
-        doReMiFlage = num; // for the click compare
-
+    public void start_notes(){
+        if(!outIsClicked) {
+            int num = gameSequens[gameSequensIndex];
+            VOICE_FLAGE = false;
+            doReMiFlage = num; // for the click compare
 
             if (16 > num && num > 4) {
                 note = findViewById(images[num]);
@@ -517,7 +549,9 @@ public class PlayActivity extends AppCompatActivity {
                 current_freq = freq[num];
                 note.setVisibility(View.VISIBLE);
                 startTranslation(note);
+
             } else {
+
                 noteLayout = findViewById(images[num]);
                 layoutImage = findViewById(layoutImages[num]);
                 layoutImage.setImageResource(R.drawable.quarter_note);
@@ -527,14 +561,20 @@ public class PlayActivity extends AppCompatActivity {
                 noteLayout.setVisibility(View.VISIBLE);
                 startTranslation(noteLayout);
             }
-
             isStarClicked = true;
-        cnt ++;
-        }
-        if(cnt < amount && !outIsClicked){
+
+            gameSequensIndex++;
+
+        }if(gameSequensIndex < gameSequens.length && !outIsClicked){
             timer();
-        }else{  delay(); }
+
+        }else{
+            delay();
+            gameSequensIndex = 0;
+        }
+
     }
+
 
     public void startTranslation(ImageView img){
 
@@ -766,6 +806,8 @@ public class PlayActivity extends AppCompatActivity {
        return (60000/(bitRate + 1)) ;
     }
 
+
+
     public void getData(){
 
         Intent intent = getIntent();
@@ -779,7 +821,9 @@ public class PlayActivity extends AppCompatActivity {
             HighNoteControl = intent.getIntExtra("i2",0);
             LowNoteControl = intent.getIntExtra("i3",20);
             amount = intent.getIntExtra("i4",15);
-            Log.d(TAG, "getData:  ***********" + " b1: " + b1 + " b2: " + b2 + " b3: " + b3 + " b4: " 
+//            gameSeq = intent.getStringExtra("NOTES_SEQUENCE");
+//            gameSequens = convertStringToIntArray(gameSeq);
+        Log.d(TAG, "getData:  ***********" + " b1: " + b1 + " b2: " + b2 + " b3: " + b3 + " b4: "
                     + b4 + " i1: " + i1 + " s1: " + s1
                     + "  " + "HighNoteControl: " + HighNoteControl + LowNoteControl + " i4: " + amount + " clef: " +b5);
 
@@ -1026,11 +1070,6 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
-
-    /**
-     *
-     */
-
     public void permission(){
         ActivityCompat.requestPermissions(PlayActivity.this,
                 new String[]{Manifest.permission.RECORD_AUDIO},
@@ -1110,7 +1149,6 @@ public class PlayActivity extends AppCompatActivity {
 
             }
         }
-
     }
 
 
@@ -1142,6 +1180,14 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+    public int[] convertStringToIntArray(String s){
+        int arr[] = new int[s.length()];
+        for (int i = 0; i <s.length() ; i++) {
+            arr[i] = ((int) s.charAt(i));
+            Log.d(TAG, "convertStringToIntArray: " + arr[i]);
+        }
+        return arr;
+    }
 
 
 }

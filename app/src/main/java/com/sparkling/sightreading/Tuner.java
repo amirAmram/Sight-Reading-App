@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,8 +22,14 @@ import be.tarsos.dsp.pitch.PitchDetectionHandler;
 import be.tarsos.dsp.pitch.PitchDetectionResult;
 import be.tarsos.dsp.pitch.PitchProcessor;
 
+
+
 public class Tuner extends AppCompatActivity {
     private static final String TAG = "Tuner";
+
+
+
+
 
     TextView noteText;
     TextView pitchText;
@@ -198,7 +205,6 @@ public class Tuner extends AppCompatActivity {
         if(pitchInHz >= freq1 && pitchInHz < freq2) {
             noteText.setText(s);
 
-
             if (pitchInHz >= freq1 - 5 && pitchInHz < freq1 + 5) {
                 noteText.setTextColor(Color.parseColor("#FF41C90F"));
                 FLAGE = false;
@@ -236,4 +242,6 @@ public class Tuner extends AppCompatActivity {
             audioThread.start();
         }
     }
+
+
 }
