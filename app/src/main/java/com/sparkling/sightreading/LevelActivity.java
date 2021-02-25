@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 
 public class LevelActivity extends AppCompatActivity {
-
+    private static final String TAG = "LevelActivity";
 
     RecyclerView stages_gridView;
 
@@ -19,6 +20,10 @@ public class LevelActivity extends AppCompatActivity {
     CardView level_2;
     CardView level_3;
     CardView level_4;
+
+    boolean b1;
+    boolean b2;
+    boolean b3;
 
 
     final int [] levels_images = new int[] {
@@ -71,6 +76,8 @@ public class LevelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level);
 
+        getData();
+
         level_1 = findViewById(R.id.level_1);
         level_2 = findViewById(R.id.level_2);
         level_3 = findViewById(R.id.level_3);
@@ -100,12 +107,26 @@ public class LevelActivity extends AppCompatActivity {
     public void setStageGrid(int[] images, String[] names, int level){
         stages_gridView = findViewById(R.id.stages_grid_view);
         stages_gridView.setVisibility(View.VISIBLE);
-        adapter = new RecyclerAdapter(LevelActivity.this, names, images,level);
+        adapter = new RecyclerAdapter(LevelActivity.this, names, images,level, b1, b2,  b3);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL,false );
         stages_gridView.setLayoutManager(gridLayoutManager);
         stages_gridView.setAdapter(adapter);
     }
 
+    public void getData(){
+
+        Intent intent = getIntent();
+        b1 = intent.getBooleanExtra("b1", false);
+
+        b2 = intent.getBooleanExtra("b2", false);
+        b3 = intent.getBooleanExtra("b3", false);
+
+//         gameSeq = intent.getStringExtra("NOTES_SEQUENCE");
+//         gameSequens = convertStringToIntArray(gameSeq);
+        Log.d(TAG, "getData:  ***********"  + " b2: " + b2 + " b3: " + b3 + " b1: " + b1);
+
+
+    }
 
 
 }

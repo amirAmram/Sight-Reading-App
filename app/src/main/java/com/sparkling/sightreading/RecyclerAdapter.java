@@ -38,20 +38,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     "1 2 3 4 5 6 7 8",
                     "1 2 3 4 5 6 7 8",
             }
-
-
     };
 
 
     String[] sArr;
     int[] iArr;
     int gameLevel;
+    boolean b2;
+    boolean b3;
+    boolean b1;
     Context context;
     LayoutInflater inflater;
 
-    public RecyclerAdapter(Context context, String[] sArr,  int[] iArr, int gameLevel ){
+    public RecyclerAdapter(Context context, String[] sArr,  int[] iArr, int gameLevel, boolean b1, boolean b2, boolean b3){
         this.sArr = sArr;
         this.iArr = iArr;
+        this.b2 = b2;
+        this.b3 = b3;
+        this.b1 = b1;
         this.gameLevel = gameLevel;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -72,7 +76,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PlayActivity.class);
-                intent.putExtra("NOTES_SEQUENCE", NOTES_SEQUENCE[gameLevel][position]);
+                intent.putExtra("b1", b1);
+                intent.putExtra("b2", b2);
+                intent.putExtra("b3", b3);
+                intent.putExtra("gameLevel", gameLevel );
+                intent.putExtra("stage", position);
                 context.startActivity(intent);
             }
         });

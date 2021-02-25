@@ -80,7 +80,6 @@ public class StartActivity extends AppCompatActivity {
         setNightMode();
 
 
-
         tPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,22 +87,37 @@ public class StartActivity extends AppCompatActivity {
                     playInterstitialAd.show();
                 } else {
                     Log.d("TAG", "The interstitial wasn't loaded yet.");
-                    intent = new Intent(StartActivity.this,PlayActivity.class);
-                    Log.d(TAG, "seek data    " + i1);
+                    intent = new Intent(StartActivity.this,LevelActivity.class);
                     intent.putExtra("b1",b1);
                     intent.putExtra("b2",b2);
                     intent.putExtra("b3",b3);
-                    intent.putExtra("b4",b4);
-                    intent.putExtra("b5",b5);
-                    intent.putExtra("i1",i1);
-                    intent.putExtra("s1",s1);
-                    intent.putExtra("i2",i2);
-                    intent.putExtra("i3",i3);
-                    intent.putExtra("i4",i4);
-
                     startActivity(intent);
 
                 }
+
+//        tPlay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (playInterstitialAd.isLoaded()) {
+//                    playInterstitialAd.show();
+//                } else {
+//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+//                    intent = new Intent(StartActivity.this,PracticeActivity.class);
+//                    Log.d(TAG, "seek data    " + i1);
+//                    intent.putExtra("b1",b1);
+//                    intent.putExtra("b2",b2);
+//                    intent.putExtra("b3",b3);
+//                    intent.putExtra("b4",b4);
+//                    intent.putExtra("b5",b5);
+//                    intent.putExtra("i1",i1);
+//                    intent.putExtra("s1",s1);
+//                    intent.putExtra("i2",i2);
+//                    intent.putExtra("i3",i3);
+//                    intent.putExtra("i4",i4);
+//
+//                    startActivity(intent);
+//
+//                }
 
                 playInterstitialAd.setAdListener(new AdListener() {
                     @Override

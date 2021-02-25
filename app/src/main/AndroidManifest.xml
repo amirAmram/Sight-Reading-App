@@ -16,7 +16,9 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".LevelActivity"></activity>
+
+        <activity android:name=".PracticeActivity"></activity>
+        <activity android:name=".LevelActivity" />
         <activity android:name=".Tuner" />
 
         <meta-data
