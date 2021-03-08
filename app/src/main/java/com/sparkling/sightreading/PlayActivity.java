@@ -42,6 +42,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Random;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -51,6 +52,8 @@ import be.tarsos.dsp.io.android.AudioDispatcherFactory;
 import be.tarsos.dsp.pitch.PitchDetectionHandler;
 import be.tarsos.dsp.pitch.PitchDetectionResult;
 import be.tarsos.dsp.pitch.PitchProcessor;
+
+import static java.lang.Double.parseDouble;
 
 public class PlayActivity extends AppCompatActivity {
     private static final String TAG = "PlayActivity";
@@ -188,8 +191,6 @@ public class PlayActivity extends AppCompatActivity {
             350,  //f1
             392,  //g1
     };
-
-
 
     /**
      *             174,  //f0
@@ -468,8 +469,19 @@ public class PlayActivity extends AppCompatActivity {
                     "1 2 3 4 5 6 7 8",
             }
 
-
     };
+
+
+    String musicNotesData[] = {
+        //   note_name-note_frequency-octave|
+        "Do-0.25-3, Re-0.50-4, Mi-0.25-3, Do-0.25-3, Re-0.50-2, Mi-0.25-2, Do-0.25-2, Re-0.50-2, Mi-0.25-2, ",
+        "Do-0.25-2, Re-0.50-2, Mi-0.25-2, ",
+    };
+
+
+    ArrayList<MusicNote> musicNoteList = new ArrayList<>();
+    int musicNoteList_index = 0;
+
 
 
     @Override
@@ -478,11 +490,11 @@ public class PlayActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE);
         setContentView(R.layout.activity_play);
         Log.d(TAG, "PlayActivity STARTED ");
-
         find();
         back();
         getData();
         loadData();
+        musicNoteSetup(0); // this _0_ need to be change to the stage number
         setNightMode();
         setScreenOn();
         setKey();
@@ -511,9 +523,7 @@ public class PlayActivity extends AppCompatActivity {
 
     public void find(){
         general = findViewById(R.id.play_general);
-
         doReMi = findViewById(R.id.do_re_mi);
-
         back = findViewById(R.id.back);
 
         Notes[5] = findViewById(R.id.text_la);
@@ -532,8 +542,11 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
+
+
     public void start_notes(){
         if(!outIsClicked) {
+
             int num = gameSequens[gameSequensIndex];
             VOICE_FLAGE = false;
             doReMiFlage = num; // for the click compare
@@ -768,9 +781,7 @@ public class PlayActivity extends AppCompatActivity {
         gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][gameStage]); // sec of notes
         amount = gameSequens.length;
         Log.d(TAG, "getData:  ***********" + " b2: " + b2 + " b3: " + b3 + " b1: " + b1 + " gameSequens " + gameSequens[0] + gameSequens[1] + gameSequens[2]);
-
-
-        }
+     }
 
     public void setNightMode(){
         if (b2) {
@@ -1184,5 +1195,22 @@ public class PlayActivity extends AppCompatActivity {
         return iArr;
     }
 
+    public void musicNoteSetup(int stage){
+
+
+
+            String tmp_arr[] = musicNotesData[stage].split(", ");
+
+            for (int j = 0; j < tmp_arr.length; j++) {
+                String sub_temp_arr[] = tmp_arr[j].split("-");
+                MusicNote note = new MusicNote(sub_temp_arr[0], Double.parseDouble(sub_temp_arr[1]),Integer.parseInt(sub_temp_arr[2]),1);
+                musicNoteList.add(note);
+            }
+
+
+
+
+
+    }
 
 }
