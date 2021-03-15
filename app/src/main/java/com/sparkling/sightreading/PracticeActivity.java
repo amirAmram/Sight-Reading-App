@@ -267,21 +267,21 @@ public class PracticeActivity extends AppCompatActivity {
             196,  //g0
             220,  //a0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             293,  //d1
             330,  //e1
             369,  //f#1
             392,  //g1
             440,  //a1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             587,  //d2
             659,  //e2
             740,  //f2
             784,  //g2
             880,  //a2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1175, //d3
             1319, //e3
     };
@@ -291,21 +291,21 @@ public class PracticeActivity extends AppCompatActivity {
             207,  //g#0
             220,  //a0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             293,  //d1
             330,  //e1
             369,  //f#1
             415,  //g#1
             440,  //a1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             587,  //d2
             659,  //e2
             740,  //f2
             830,  //g#2
             880,  //a2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1175, //d3
             1319, //e3
     };
@@ -315,21 +315,21 @@ public class PracticeActivity extends AppCompatActivity {
             207,  //g#0
             220,  //a0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             311,  //d#1
             330,  //e1
             369,  //f#1
             415,  //g#1
             440,  //a1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             622,  //d#2
             659,  //e2
             740,  //f2
             830,  //g#2
             880,  //a2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1244, //d#3
             1319, //e3
     };
@@ -339,21 +339,21 @@ public class PracticeActivity extends AppCompatActivity {
             207,  //g#0
             233,  //a#0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             311,  //d#1
             330,  //e1
             369,  //f#1
             415,  //g#1
             466,  //a#1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             622,  //d#2
             659,  //e2
             740,  //f2
             830,  //g#2
             932,  //a#2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1244, //d#3
             1319, //e3
     };

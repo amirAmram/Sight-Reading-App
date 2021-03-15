@@ -18,6 +18,18 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
+/**
+ * This class is the first screen after the logo
+ * This class presents the main menu
+ * There 4 option of navigation:
+ *  1. move to PlayActivity
+ *  2. move to OptionActivity
+ *  3. move to InfoActivity
+ *  4. move to AboutActivity
+ *
+ *  */
+
+
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
     TextView tPlay;
@@ -31,10 +43,10 @@ public class StartActivity extends AppCompatActivity {
 
 
     public static  final String SHARED_PREFES = "sharedPrefs_2";
-    public static  final String SWITCH_1 = "b1";
-    public static  final String SWITCH_2 = "b2";
-    public static  final String SWITCH_3 = "b3";
-    public static  final String SWITCH_4 = "b4";
+    public static  final String SWITCH_ENABLE_SCREEN_ON = "b1";
+    public static  final String SWITCH_ENABLE_NIGHT_MOD = "b2";
+    public static  final String SWITCH_ENABLE_SOUND = "b3";
+    public static  final String SWITCH_ENABLE_TEMPO_ON_SCREEN = "b4";
     public static  final String CLEF_SWITCH = "clef_switch";
     public static  final String AMOUNT_INT = "i4";
     public static  final String SEEK_INT = "i1";
@@ -43,19 +55,25 @@ public class StartActivity extends AppCompatActivity {
     public static  final String SPINNER_LOW_INT = "i3";
 
 
+
+
+
+
     RelativeLayout general;
     boolean acknowledge = false;
     boolean play_acknowledge = false;
-    boolean b1;
-    boolean b2;
-    boolean b3;
-    boolean b4;
-    boolean b5;
-    int i1;
-    String s1;
-    int i2;
-    int i3;
-    int i4;
+    boolean enable_screen_on;
+    boolean enable_night_mode;
+    boolean enable_sound;
+    boolean enable_tempo_on_play_screen;
+    boolean enable_f_clef;
+    int seek_int;
+    String spinner_string;
+    int spinner_high_int;
+    int spinner_low_int;
+    int amount_of_notes_per_game;
+    
+
 
 
     private InterstitialAd optionsInterstitialAd;
@@ -86,11 +104,11 @@ public class StartActivity extends AppCompatActivity {
                 if (playInterstitialAd.isLoaded()) {
                     playInterstitialAd.show();
                 } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    Log.d("TAG", "The interstitial wasn'textView loaded yet.");
                     intent = new Intent(StartActivity.this,LevelActivity.class);
-                    intent.putExtra("b1",b1);
-                    intent.putExtra("b2",b2);
-                    intent.putExtra("b3",b3);
+                    intent.putExtra("is_screen_on_enable",enable_screen_on);
+                    intent.putExtra("is_night_mode_enable",enable_night_mode);
+                    intent.putExtra("is_sound_enable",enable_sound);
                     startActivity(intent);
 
                 }
@@ -101,7 +119,7 @@ public class StartActivity extends AppCompatActivity {
 //                if (playInterstitialAd.isLoaded()) {
 //                    playInterstitialAd.show();
 //                } else {
-//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+//                    Log.d("TAG", "The interstitial wasn'textView loaded yet.");
 //                    intent = new Intent(StartActivity.this,PracticeActivity.class);
 //                    Log.d(TAG, "seek data    " + i1);
 //                    intent.putExtra("b1",b1);
@@ -124,17 +142,17 @@ public class StartActivity extends AppCompatActivity {
                     public void onAdClosed() {
                         // Load the next interstitial.
                         intent = new Intent(StartActivity.this,PlayActivity.class);
-                        Log.d(TAG, "seek data    " + i1);
-                        intent.putExtra("b1",b1);
-                        intent.putExtra("b2",b2);
-                        intent.putExtra("b3",b3);
-                        intent.putExtra("b4",b4);
-                        intent.putExtra("b5",b5);
-                        intent.putExtra("i1",i1);
-                        intent.putExtra("s1",s1);
-                        intent.putExtra("i2",i2);
-                        intent.putExtra("i3",i3);
-                        intent.putExtra("i4",i4);
+                        Log.d(TAG, "seek data    " + seek_int);
+                        intent.putExtra("b1",enable_screen_on);
+                        intent.putExtra("b2",enable_night_mode);
+                        intent.putExtra("b3",enable_sound);
+                        intent.putExtra("b4",enable_tempo_on_play_screen);
+                        intent.putExtra("b5",enable_f_clef);
+                        intent.putExtra("i1",seek_int);
+                        intent.putExtra("s1",spinner_string);
+                        intent.putExtra("i2",spinner_high_int);
+                        intent.putExtra("i3",spinner_low_int);
+                        intent.putExtra("i4",amount_of_notes_per_game);
 
                         startActivity(intent);
 
@@ -155,9 +173,9 @@ public class StartActivity extends AppCompatActivity {
                 if (optionsInterstitialAd.isLoaded()) {
                     optionsInterstitialAd.show();
                 } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    Log.d("TAG", "The interstitial wasn'textView loaded yet.");
                     intent = new Intent(StartActivity.this,OptionsActivity.class);
-                    intent.putExtra("seekInt",i1);
+                    intent.putExtra("seek_int",seek_int);
                     startActivity(intent);
                 }
 
@@ -166,7 +184,7 @@ public class StartActivity extends AppCompatActivity {
                     public void onAdClosed() {
                         // Load the next interstitial.
                         intent = new Intent(StartActivity.this,OptionsActivity.class);
-                        intent.putExtra("seekInt",i1);
+                        intent.putExtra("seekInt",seek_int);
                         startActivity(intent);
                         optionsInterstitialAd.loadAd(new AdRequest.Builder().build());
 
@@ -183,11 +201,11 @@ public class StartActivity extends AppCompatActivity {
                 if (learnInterstitialAd.isLoaded()) {
                     learnInterstitialAd.show();
                 } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    Log.d("TAG", "The interstitial wasn'textView loaded yet.");
                     intent = new Intent(StartActivity.this,InfoActivity.class);
-                    intent.putExtra("b1",b1);
-                    intent.putExtra("b2",b2);
-                    intent.putExtra("b3",b3);
+                    intent.putExtra("b1",enable_screen_on);
+                    intent.putExtra("b2",enable_night_mode);
+                    intent.putExtra("b3",enable_sound);
                     startActivity(intent);
                 }
 
@@ -196,9 +214,9 @@ public class StartActivity extends AppCompatActivity {
                     public void onAdClosed() {
                         // Load the next interstitial.
                         intent = new Intent(StartActivity.this,InfoActivity.class);
-                        intent.putExtra("b1",b1);
-                        intent.putExtra("b2",b2);
-                        intent.putExtra("b3",b3);
+                        intent.putExtra("b1",enable_screen_on);
+                        intent.putExtra("b2",enable_night_mode);
+                        intent.putExtra("b3",enable_sound);
                         startActivity(intent);
                         learnInterstitialAd.loadAd(new AdRequest.Builder().build());
 
@@ -216,11 +234,11 @@ public class StartActivity extends AppCompatActivity {
                 if (infoInterstitialAd.isLoaded()) {
                     infoInterstitialAd.show();
                 } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    Log.d("TAG", "The interstitial wasn'textView loaded yet.");
                     intent = new Intent(StartActivity.this,AboutActivity.class);
-                    intent.putExtra("b1",b1);
-                    intent.putExtra("b2",b2);
-                    intent.putExtra("b3",b3);
+                    intent.putExtra("b1",enable_screen_on);
+                    intent.putExtra("b2",enable_night_mode);
+                    intent.putExtra("b3",enable_sound);
                     startActivity(intent);
                 }
 
@@ -229,9 +247,9 @@ public class StartActivity extends AppCompatActivity {
                     public void onAdClosed() {
                         // Load the next interstitial.
                         intent = new Intent(StartActivity.this,AboutActivity.class);
-                        intent.putExtra("b1",b1);
-                        intent.putExtra("b2",b2);
-                        intent.putExtra("b3",b3);
+                        intent.putExtra("b1",enable_screen_on);
+                        intent.putExtra("b2",enable_night_mode);
+                        intent.putExtra("b3",enable_sound);
                         startActivity(intent);
                         infoInterstitialAd.loadAd(new AdRequest.Builder().build());
 
@@ -247,16 +265,16 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 intent = new Intent(StartActivity.this,LevelActivity.class);
-                intent.putExtra("b1",b1);
-                intent.putExtra("b2",b2);
-                intent.putExtra("b3",b3);
-                intent.putExtra("b4",b4);
-                intent.putExtra("b5",b5);
-                intent.putExtra("i1",i1);
-                intent.putExtra("s1",s1);
-                intent.putExtra("i2",i2);
-                intent.putExtra("i3",i3);
-                intent.putExtra("i4",i4);
+                intent.putExtra("b1",enable_screen_on);
+                intent.putExtra("b2",enable_night_mode);
+                intent.putExtra("b3",enable_sound);
+                intent.putExtra("b4",enable_tempo_on_play_screen);
+                intent.putExtra("b5",enable_f_clef);
+                intent.putExtra("i1",seek_int);
+                intent.putExtra("s1",spinner_string);
+                intent.putExtra("i2",spinner_high_int);
+                intent.putExtra("i3",spinner_low_int);
+                intent.putExtra("i4",amount_of_notes_per_game);
 
                 startActivity(intent);
             }
@@ -270,16 +288,16 @@ public class StartActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFES,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         // editor.putString(TEXT, s);
-        editor.putBoolean(SWITCH_1,b1);
-        editor.putBoolean(SWITCH_2,b2);
-        editor.putBoolean(SWITCH_3,b3);
-        editor.putBoolean(SWITCH_4,b4);
-        editor.putBoolean(CLEF_SWITCH,b5);
-        editor.putInt(SEEK_INT,i1);
-        editor.putString(SPINNER_STRING,s1);
-        editor.putInt(SPINNER_HIGH_INT,i2);
-        editor.putInt(SPINNER_LOW_INT,i3);
-        editor.putInt(AMOUNT_INT,i4);
+        editor.putBoolean(SWITCH_ENABLE_SCREEN_ON,enable_screen_on);
+        editor.putBoolean(SWITCH_ENABLE_NIGHT_MOD,enable_night_mode);
+        editor.putBoolean(SWITCH_ENABLE_SOUND,enable_sound);
+        editor.putBoolean(SWITCH_ENABLE_TEMPO_ON_SCREEN,enable_tempo_on_play_screen);
+        editor.putBoolean(CLEF_SWITCH,enable_f_clef);
+        editor.putInt(SEEK_INT,seek_int);
+        editor.putString(SPINNER_STRING,spinner_string);
+        editor.putInt(SPINNER_HIGH_INT,spinner_high_int);
+        editor.putInt(SPINNER_LOW_INT,spinner_low_int);
+        editor.putInt(AMOUNT_INT,amount_of_notes_per_game);
 
         editor.apply();
     }
@@ -287,29 +305,29 @@ public class StartActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFES,MODE_PRIVATE);
 
-        b1 = sharedPreferences.getBoolean(SWITCH_1,false);
-        b2 = sharedPreferences.getBoolean(SWITCH_2,false);
-        b3 = sharedPreferences.getBoolean(SWITCH_3,false);
-        b4 = sharedPreferences.getBoolean(SWITCH_4,false);
-        b5 = sharedPreferences.getBoolean(CLEF_SWITCH,false);
-        i1 = sharedPreferences.getInt(SEEK_INT,40);
-        s1 = sharedPreferences.getString(SPINNER_STRING,"C");
-        i2 = sharedPreferences.getInt(SPINNER_HIGH_INT,0);
-        i3 = sharedPreferences.getInt(SPINNER_LOW_INT,20);
-        i4 = sharedPreferences.getInt(AMOUNT_INT,15);
+        enable_screen_on = sharedPreferences.getBoolean(SWITCH_ENABLE_SCREEN_ON,false);
+        enable_night_mode = sharedPreferences.getBoolean(SWITCH_ENABLE_NIGHT_MOD,false);
+        enable_sound = sharedPreferences.getBoolean(SWITCH_ENABLE_SOUND,false);
+        enable_tempo_on_play_screen = sharedPreferences.getBoolean(SWITCH_ENABLE_TEMPO_ON_SCREEN,false);
+        enable_f_clef = sharedPreferences.getBoolean(CLEF_SWITCH,false);
+        seek_int = sharedPreferences.getInt(SEEK_INT,40);
+        spinner_string = sharedPreferences.getString(SPINNER_STRING,"C");
+        spinner_high_int = sharedPreferences.getInt(SPINNER_HIGH_INT,0);
+        spinner_low_int = sharedPreferences.getInt(SPINNER_LOW_INT,20);
+        amount_of_notes_per_game = sharedPreferences.getInt(AMOUNT_INT,15);
     }
     public void updateView(){
         Log.d(TAG, "updateView:" + "\n"
-                + "setScreenOn " + b1 + "\n"
-                + "setNightMode " +b2 + "\n"
-                + "setEnableSound " + b3 + "\n"
-                + "setEnableTempOnPlayScreen " + b4 + "\n"
-                + "clef " + b5 + "\n"
-                + "seekInt " + i1 + "\n"
-                + "spinner_string " + s1 + "\n"
-                + "spinner_high_Int " + i2 + "\n"
-                + "spinner_low_Int " + i3  + "\n"
-                + "amount " + i4 + "\n");
+                + "setScreenOn " + enable_screen_on + "\n"
+                + "setNightMode " +enable_night_mode + "\n"
+                + "setEnableSound " + enable_sound + "\n"
+                + "setEnableTempOnPlayScreen " + enable_tempo_on_play_screen + "\n"
+                + "clef " + enable_f_clef + "\n"
+                + "seekInt " + seek_int + "\n"
+                + "spinner_string " + spinner_string + "\n"
+                + "spinner_high_Int " + spinner_high_int + "\n"
+                + "spinner_low_Int " + spinner_low_int  + "\n"
+                + "amount " + amount_of_notes_per_game + "\n");
 
     }
 
@@ -321,24 +339,24 @@ public class StartActivity extends AppCompatActivity {
         Intent intent = getIntent();
         play_acknowledge = intent.getBooleanExtra("play_acknowledge",false);
         if(play_acknowledge){
-            i1 = intent.getIntExtra("seekInt", 60);
+            seek_int = intent.getIntExtra("seekInt", 60);
             saveData();
             play_acknowledge = false;
             loadData();
         }
 
-        acknowledge = intent.getBooleanExtra("acknowledge",false);
+        acknowledge = intent.getBooleanExtra("options_acknowledge",false);
         if (acknowledge) {
-            b1 = intent.getBooleanExtra("setScreenOn", false);
-            b2 = intent.getBooleanExtra("setNightMode", false);
-            b3 = intent.getBooleanExtra("setEnableSound", false);
-            b4 = intent.getBooleanExtra("setEnableTempOnPlayScreen", false);
-            b5 = intent.getBooleanExtra("clef", false);
-            i1 = intent.getIntExtra("seekInt", 60);
-            s1 = intent.getStringExtra("spinner_string");
-            i2 = intent.getIntExtra("spinner_high_Int",0);
-            i3 = intent.getIntExtra("spinner_low_Int",20);
-            i4 = intent.getIntExtra("amount", 15);
+            enable_screen_on = intent.getBooleanExtra("is_screen_on", false);
+            enable_night_mode = intent.getBooleanExtra("is_night_mode", false);
+            enable_sound = intent.getBooleanExtra("enable_sound", false);
+            enable_tempo_on_play_screen = intent.getBooleanExtra("is_temp_on_play_screen_enable", false);
+            enable_f_clef = intent.getBooleanExtra("clef", false);
+            seek_int = intent.getIntExtra("seek_int", 60);
+            spinner_string = intent.getStringExtra("spinner_string");
+            spinner_high_int = intent.getIntExtra("spinner_high_Int",0);
+            spinner_low_int = intent.getIntExtra("spinner_low_Int",20);
+            amount_of_notes_per_game = intent.getIntExtra("amount", 15);
 
             updateView();
 
@@ -351,7 +369,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void setScreenOn(){
-        if (b1){
+        if (enable_screen_on){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         else{
@@ -359,7 +377,7 @@ public class StartActivity extends AppCompatActivity {
         }
     }
     public void setNightMode(){
-        if (b2) {
+        if (enable_night_mode) {
             general.setBackgroundColor(Color.parseColor("#585858"));
             tPlay.setTextColor(Color.parseColor("#1B1A1A"));
             tPlay.setTextColor(Color.parseColor("#FF2E2B2B"));

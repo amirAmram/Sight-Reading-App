@@ -27,15 +27,29 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+/**
+ * This class represents preference
+ * This class include 10 different options
+ *  1. set screen on
+ *  2. set night mode
+ *  3. sound enable
+ *  4. tempo on play screen enable
+ *  5. tempo rate
+ *  6. set scale
+ *  7. set highest note plays
+ *  8. set lowest note plays
+ *  9. amount of note every game
+ *  10. clef (F or C)
+ *  */
+
 public class OptionsActivity extends AppCompatActivity {
     private static final String TAG = "OptionsActivity";
 
     public static  final String SHARED_PREFES = "sharedPrefs";
-    public static  final String TEXT = "text";
-    public static  final String SWITCH_1 = "switch1";
-    public static  final String SWITCH_2 = "switch2";
-    public static  final String SWITCH_3 = "switch3";
-    public static  final String SWITCH_4 = "switch4";
+    public static  final String SWITCH_SCREEN_ON = "SWITCH_SCREEN_ON";
+    public static  final String SWITCH_NIGHT_MODE = "SWITCH_NIGHT_MODE";
+    public static  final String SWITCH_ENABLE_SOUND = "SWITCH_ENABLE_SOUND";
+    public static  final String SWITCH_TEMPO_ON_PLAY_SCREEN = "SWITCH_TEMPO_ON_PLAY_SCREEN";
     public static  final String SEEK_INT = "seekint";
     public static  final String AMOUNT_INT = "amount_int";
     public static  final String CLEF_SWITCH = "clef_switch";
@@ -54,19 +68,18 @@ public class OptionsActivity extends AppCompatActivity {
     String[] RangeArray_G = {"F0","G0","A0","B0","C1","D1","E1","F1","G1","A1","B1","C2","D2","E2","F2","G2","A2","B2","C3","D3","E3"};
     String[] RangeArray_F = {"A0","B0","C1","D1","E1","F1","G1","A1","B1","C2","D2","E2","F2","G2","A2","B2","C3","D3","E3","F3","G3"};
 
-    RelativeLayout general;
+    RelativeLayout options_general_layout;
 
     Switch setNightMode;
     Switch setScreenOn;
     Switch setEnableSound;
     Switch setEnableTempOnPlayScreen;
 
-    ImageView gClef;
-    ImageView fClef;
+    ImageView g_clef;
+    ImageView f_clef;
     TextView amount_15;
     TextView amount_30;
     TextView amount_50;
-
 
 
     SeekBar seek ;
@@ -74,15 +87,16 @@ public class OptionsActivity extends AppCompatActivity {
     int seekInt = 0;
 
 
-    boolean switchOnOff_1;
-    boolean switchOnOff_2;
-    boolean switchOnOff_3;
-    boolean switchOnOff_4;
+    boolean on_off_screen_on_switch;
+    boolean on_off_night_mode_switch;
+    boolean on_off_sound_enable_switch;
+    boolean on_off_tempo_on_play_screen_switch;
     boolean clef_switch = false;
     int spinnerKeyInt;
     int spinnerHighInt;
     int spinnerLowInt;
-    int amountInt;
+    int amountOfNotesInt;
+
 
 
     @Override
@@ -92,7 +106,7 @@ public class OptionsActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_options);
         Log.d(TAG, "OptionsActivity STARTED ");
-        general = findViewById(R.id.general);
+        options_general_layout = findViewById(R.id.general_layout_options);
 
         banner();
         find();
@@ -106,30 +120,24 @@ public class OptionsActivity extends AppCompatActivity {
         setSpinner();
         setSeekBar();
 
-
-
     }
 
     public void getData(){
         Intent intent = getIntent();
-        seekInt = intent.getIntExtra("seekInt", 60);
+        seekInt = intent.getIntExtra("seek_int", 60);
         saveData();
-
     }
 
     public void mute (boolean b){
         AudioManager manager= (AudioManager)getSystemService(AUDIO_SERVICE);
         manager.setStreamMute(AudioManager.STREAM_MUSIC,b);
-
-
-
     }
 
     public void setSeekBar(){
         seek = findViewById(R.id.seekBar);
         seekText = findViewById(R.id.seekText);
 
-        if (switchOnOff_4){ getData(); }
+        if (on_off_tempo_on_play_screen_switch){ getData(); }
 
         loadData();
         updateView();
@@ -216,8 +224,6 @@ public class OptionsActivity extends AppCompatActivity {
             spinnerKey.setSelection(spinnerKeyInt); }
 
 
-
-
         String[] adapterArr = null;
         if (clef_switch){
             adapterArr = RangeArray_F;
@@ -241,10 +247,10 @@ public class OptionsActivity extends AppCompatActivity {
         loadData();
         updateView();
 
-        if (switchOnOff_2) {
-            general.setBackgroundColor(Color.parseColor("#585858"));
+        if (on_off_night_mode_switch) {
+            options_general_layout.setBackgroundColor(Color.parseColor("#585858"));
         }else{
-            general.setBackgroundColor(Color.parseColor("#ffffff"));
+            options_general_layout.setBackgroundColor(Color.parseColor("#ffffff"));
         }
 
         setNightMode.setOnClickListener(new View.OnClickListener() {
@@ -253,9 +259,9 @@ public class OptionsActivity extends AppCompatActivity {
                 saveData();
                 Log.d(TAG, "night mode clicked");
                 if (setNightMode.isChecked()) {
-                    general.setBackgroundColor(Color.parseColor("#585858"));
+                    options_general_layout.setBackgroundColor(Color.parseColor("#585858"));
                 }else{
-                    general.setBackgroundColor(Color.parseColor("#ffffff"));
+                    options_general_layout.setBackgroundColor(Color.parseColor("#ffffff"));
                 }
             }
         });
@@ -301,22 +307,20 @@ public class OptionsActivity extends AppCompatActivity {
         });
     }
 
-
-
-    /*shared prefencece */
+    /*shared preference */
     public void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFES,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(SWITCH_1,setScreenOn.isChecked());
-        editor.putBoolean(SWITCH_2,setNightMode.isChecked());
-        editor.putBoolean(SWITCH_3,setEnableSound.isChecked());
-        editor.putBoolean(SWITCH_4,setEnableTempOnPlayScreen.isChecked());
+        editor.putBoolean(SWITCH_SCREEN_ON,setScreenOn.isChecked());
+        editor.putBoolean(SWITCH_NIGHT_MODE,setNightMode.isChecked());
+        editor.putBoolean(SWITCH_ENABLE_SOUND,setEnableSound.isChecked());
+        editor.putBoolean(SWITCH_TEMPO_ON_PLAY_SCREEN,setEnableTempOnPlayScreen.isChecked());
         editor.putBoolean(CLEF_SWITCH,clef_switch);
         editor.putInt(SEEK_INT,seekInt);
         editor.putInt(SPINNER_INT,spinnerKeyInt);
         editor.putInt(SPINNER_HIGH_INT,spinnerHighInt);
         editor.putInt(SPINNER_LOW_INT,spinnerLowInt);
-        editor.putInt(AMOUNT_INT,amountInt);
+        editor.putInt(AMOUNT_INT,amountOfNotesInt);
 
 
         editor.apply();
@@ -325,33 +329,33 @@ public class OptionsActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFES,MODE_PRIVATE);
 
-        switchOnOff_1 = sharedPreferences.getBoolean(SWITCH_1,false);
-        switchOnOff_2 = sharedPreferences.getBoolean(SWITCH_2,false);
-        switchOnOff_3 = sharedPreferences.getBoolean(SWITCH_3,false);
-        switchOnOff_4 = sharedPreferences.getBoolean(SWITCH_4,false);
+        on_off_screen_on_switch = sharedPreferences.getBoolean(SWITCH_SCREEN_ON,false);
+        on_off_night_mode_switch = sharedPreferences.getBoolean(SWITCH_NIGHT_MODE,false);
+        on_off_sound_enable_switch = sharedPreferences.getBoolean(SWITCH_ENABLE_SOUND,false);
+        on_off_tempo_on_play_screen_switch = sharedPreferences.getBoolean(SWITCH_TEMPO_ON_PLAY_SCREEN,false);
         clef_switch = sharedPreferences.getBoolean(CLEF_SWITCH,false);
         seekInt = sharedPreferences.getInt(SEEK_INT,60);
         spinnerKeyInt = sharedPreferences.getInt(SPINNER_INT,0);
         spinnerHighInt = sharedPreferences.getInt(SPINNER_HIGH_INT,0);
         spinnerLowInt = sharedPreferences.getInt(SPINNER_LOW_INT,0);
-        amountInt = sharedPreferences.getInt(AMOUNT_INT,15);
+        amountOfNotesInt = sharedPreferences.getInt(AMOUNT_INT,15);
     }
     public void updateView(){
-        setScreenOn.setChecked(switchOnOff_1);
-        setNightMode.setChecked(switchOnOff_2);
-        setEnableSound.setChecked(switchOnOff_3);
-        setEnableTempOnPlayScreen.setChecked(switchOnOff_4);
+        setScreenOn.setChecked(on_off_screen_on_switch);
+        setNightMode.setChecked(on_off_night_mode_switch);
+        setEnableSound.setChecked(on_off_sound_enable_switch);
+        setEnableTempOnPlayScreen.setChecked(on_off_tempo_on_play_screen_switch);
         Log.d(TAG, "updateView:" + "\n"
-                + "setScreenOn " + switchOnOff_1 + "\n"
-                + "setNightMode " +switchOnOff_2 + "\n"
-                + "setEnableSound " + switchOnOff_3 + "\n"
-                + "setEnableTempOnPlayScreen " + switchOnOff_4 + "\n"
+                + "setScreenOn " + on_off_screen_on_switch + "\n"
+                + "setNightMode " +on_off_night_mode_switch + "\n"
+                + "setEnableSound " + on_off_sound_enable_switch + "\n"
+                + "setEnableTempOnPlayScreen " + on_off_tempo_on_play_screen_switch + "\n"
                 + "clef " + clef_switch + "\n"
                 + "seekInt " + seekInt + "\n"
                 + "spinner_int " + spinnerKeyInt + "\n"
                 + "spinner_high_Int " + spinnerHighInt + "\n"
                 + "spinner_low_Int " + spinnerLowInt  + "\n"
-                + "amount " + amountInt + "\n");
+                + "amount " + amountOfNotesInt + "\n");
 
     }
 
@@ -361,8 +365,8 @@ public class OptionsActivity extends AppCompatActivity {
         setEnableSound = findViewById(R.id.set_enable_sound);
         setEnableTempOnPlayScreen = findViewById(R.id.set_enable_temp_on_play_screen);
 
-        gClef = findViewById(R.id.g_clef);
-        fClef = findViewById(R.id.f_clef);
+        g_clef = findViewById(R.id.g_clef);
+        f_clef = findViewById(R.id.f_clef);
         amount_15 = findViewById(R.id.amount_15);
         amount_30 = findViewById(R.id.amount_30);
         amount_50 = findViewById(R.id.amount_50);
@@ -371,16 +375,16 @@ public class OptionsActivity extends AppCompatActivity {
     public void passData(){
 
         Intent intent = new Intent(this,StartActivity.class);
-        intent.putExtra("acknowledge",true);
-        intent.putExtra("setScreenOn",setScreenOn.isChecked());
-        intent.putExtra("setNightMode",setNightMode.isChecked());
-        intent.putExtra("setEnableSound",setEnableSound.isChecked());
-        intent.putExtra("setEnableTempOnPlayScreen",setEnableTempOnPlayScreen.isChecked());
-        intent.putExtra("seekInt",seekInt);
-        intent.putExtra("spinner_string",Keys[spinnerKeyInt]);
+        intent.putExtra("options_acknowledge",true);
+        intent.putExtra("is_screen_on",setScreenOn.isChecked());
+        intent.putExtra("is_night_mode",setNightMode.isChecked());
+        intent.putExtra("enable_sound",setEnableSound.isChecked());
+        intent.putExtra("is_temp_on_play_screen_enable",setEnableTempOnPlayScreen.isChecked());
+        intent.putExtra("seek_int",seekInt);
+        intent.putExtra("spinner_string",Keys[spinnerKeyInt]);//scale name
         intent.putExtra("spinner_high_Int",spinnerHighInt);
         intent.putExtra("spinner_low_Int",spinnerLowInt);
-        intent.putExtra("amount",amountInt);
+        intent.putExtra("amount",amountOfNotesInt);
         intent.putExtra("clef",clef_switch);
 
         startActivity(intent);
@@ -401,21 +405,21 @@ public class OptionsActivity extends AppCompatActivity {
         updateView();
 
         if(clef_switch){
-            gClef.getBackground().setAlpha(0);
-            fClef.getBackground().setAlpha(250);
+            g_clef.getBackground().setAlpha(0);
+            f_clef.getBackground().setAlpha(250);
         }
 
         if (!clef_switch){
-            gClef.getBackground().setAlpha(250);
-            fClef.getBackground().setAlpha(0);
+            g_clef.getBackground().setAlpha(250);
+            f_clef.getBackground().setAlpha(0);
         }
 
 
-        gClef.setOnClickListener(new View.OnClickListener() {
+        g_clef.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gClef.getBackground().setAlpha(250);
-                fClef.getBackground().setAlpha(0);
+                g_clef.getBackground().setAlpha(250);
+                f_clef.getBackground().setAlpha(0);
                 clef_switch = false;
                 setSpinnerAdapter();
                 saveData();
@@ -423,11 +427,11 @@ public class OptionsActivity extends AppCompatActivity {
             }
         });
 
-        fClef.setOnClickListener(new View.OnClickListener() {
+        f_clef.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gClef.getBackground().setAlpha(0);
-                fClef.getBackground().setAlpha(250);
+                g_clef.getBackground().setAlpha(0);
+                f_clef.getBackground().setAlpha(250);
                 clef_switch = true;
                 setSpinnerAdapter();
                 saveData();
@@ -445,19 +449,19 @@ public class OptionsActivity extends AppCompatActivity {
         amount_30.getBackground().setAlpha(0);
         amount_50.getBackground().setAlpha(0);
 
-        if (amountInt == 15){
+        if (amountOfNotesInt == 15){
             amount_15.getBackground().setAlpha(250);
             amount_30.getBackground().setAlpha(0);
             amount_50.getBackground().setAlpha(0);
         }
 
-        if (amountInt == 30){
+        if (amountOfNotesInt == 30){
             amount_15.getBackground().setAlpha(0);
             amount_30.getBackground().setAlpha(250);
             amount_50.getBackground().setAlpha(0);
         }
 
-        if (amountInt == 50){
+        if (amountOfNotesInt == 50){
             amount_15.getBackground().setAlpha(0);
             amount_30.getBackground().setAlpha(0);
             amount_50.getBackground().setAlpha(250);
@@ -471,7 +475,7 @@ public class OptionsActivity extends AppCompatActivity {
                 amount_15.getBackground().setAlpha(250);
                 amount_30.getBackground().setAlpha(0);
                 amount_50.getBackground().setAlpha(0);
-                amountInt = 15;
+                amountOfNotesInt = 15;
                 saveData();
             }
         });
@@ -482,7 +486,7 @@ public class OptionsActivity extends AppCompatActivity {
                 amount_15.getBackground().setAlpha(0);
                 amount_30.getBackground().setAlpha(250);
                 amount_50.getBackground().setAlpha(0);
-                amountInt = 30;
+                amountOfNotesInt = 30;
                 saveData();
             }
         });
@@ -493,7 +497,7 @@ public class OptionsActivity extends AppCompatActivity {
                 amount_15.getBackground().setAlpha(0);
                 amount_30.getBackground().setAlpha(0);
                 amount_50.getBackground().setAlpha(250);
-                amountInt = 50;
+                amountOfNotesInt = 50;
                 saveData();
             }
         });

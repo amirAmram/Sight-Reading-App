@@ -25,9 +25,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,30 +51,29 @@ import be.tarsos.dsp.pitch.PitchDetectionHandler;
 import be.tarsos.dsp.pitch.PitchDetectionResult;
 import be.tarsos.dsp.pitch.PitchProcessor;
 
-import static java.lang.Double.parseDouble;
-
 public class PlayActivity extends AppCompatActivity {
     private static final String TAG = "PlayActivity";
 
     public static  final String SHARED_PREFES = "sharedPrefs";
     public static  final String GRAPH_SCORE_ARRY = "graph_score";
-    public static  final String GRAPH_INDEX = "spinnerint";
+    public static  final String GRAPH_INDEX = "graph_index";
 
     String s1 = "C";
-    boolean b5 = false;
+    boolean key = false; // false = C, true = F.
     int percent = 0;
     int amount = 0;
 
 
-    int gameLevel;
-    int gameStage;
+    int game_level;
+    int game_stage;
     int gameSequens[];
     int gameSequensIndex = 0;
     int [] freq ;
-    Button [] Notes = new Button[7];
+    Button [] notes_button_on_screen_array = new Button[7];
 
-    LinearLayout doReMi;
-    int doReMiFlage = -1;
+
+    LinearLayout doReMi_buttons_on_play_screen_layout;
+    int id_of_playing_note = -1;
 
     AlertDialog alertDialog;
     TextView performance;
@@ -87,14 +84,14 @@ public class PlayActivity extends AppCompatActivity {
     ImageView star3;
 
 
-
-    TextView title;
-    TextView time;
-    ImageView note;
+    TextView title_tv;
+    TextView time_tv;
+    ImageView note_image;
     RelativeLayout noteLayout;
     ImageView layoutImage;
-    Button start;
+    Button start_play_button;
     ImageView back;
+
 
     Random r = new Random();
     final int [] images = new int[] {
@@ -282,21 +279,21 @@ public class PlayActivity extends AppCompatActivity {
             196,  //g0
             220,  //a0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             293,  //d1
             330,  //e1
             369,  //f#1
             392,  //g1
             440,  //a1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             587,  //d2
             659,  //e2
             740,  //f2
             784,  //g2
             880,  //a2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1175, //d3
             1319, //e3
     };
@@ -306,21 +303,21 @@ public class PlayActivity extends AppCompatActivity {
             207,  //g#0
             220,  //a0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             293,  //d1
             330,  //e1
             369,  //f#1
             415,  //g#1
             440,  //a1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             587,  //d2
             659,  //e2
             740,  //f2
             830,  //g#2
             880,  //a2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1175, //d3
             1319, //e3
     };
@@ -330,21 +327,21 @@ public class PlayActivity extends AppCompatActivity {
             207,  //g#0
             220,  //a0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             311,  //d#1
             330,  //e1
             369,  //f#1
             415,  //g#1
             440,  //a1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             622,  //d#2
             659,  //e2
             740,  //f2
             830,  //g#2
             880,  //a2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1244, //d#3
             1319, //e3
     };
@@ -354,21 +351,21 @@ public class PlayActivity extends AppCompatActivity {
             207,  //g#0
             233,  //a#0
             246,  //b0
-            277,  //c#1
+            277,  //cardView#1
             311,  //d#1
             330,  //e1
             369,  //f#1
             415,  //g#1
             466,  //a#1
             494,  //b1
-            544,  //c#2
+            544,  //cardView#2
             622,  //d#2
             659,  //e2
             740,  //f2
             830,  //g#2
             932,  //a#2
             987,  //b2
-            1047, //c#3
+            1047, //cardView#3
             1244, //d#3
             1319, //e3
     };
@@ -411,24 +408,26 @@ public class PlayActivity extends AppCompatActivity {
      *             1244,
      *             1319, //e3 */
 
-    int cnt = 0;
+    int note_playing_counter = 0;
     int sum = 0;
-    boolean isStarClicked = false;
+    boolean is_star_happen = false; //this not give the user
 
-    RelativeLayout general;
-    boolean b1;
-    boolean b2;
-    boolean b3;
+
+    RelativeLayout play_general_layout;
+    boolean is_screen_on_enable;
+    boolean is_night_mode_enable;
+    boolean is_sound_enable;
+
 
     ImageView image_key;
 
     int rate = 2500;
 
     DataPoint[] points = new DataPoint[100];
-    int index_ = -1;
+    int graph_index = -1;
     View v;
 
-    boolean outIsClicked = false;
+    boolean out_is_clicked = false;
 
     int current_freq = -10;
     //     ^
@@ -436,7 +435,6 @@ public class PlayActivity extends AppCompatActivity {
     //      range of 3 both side --> ( -1 + 3, -1 - 3 ) so it could be -5 but I took extra
 
     boolean VOICE_FLAGE = false;
-
 
 
     String[][] NOTES_SEQUENCE = new String[][]{
@@ -501,88 +499,124 @@ public class PlayActivity extends AppCompatActivity {
 
         findNotes();
 
-        start.setOnClickListener(new View.OnClickListener() {
+        start_play_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //title.setVisibility(View.INVISIBLE);
-                time.setVisibility(View.VISIBLE);
-                start.setVisibility(View.GONE);
-                cnt = 0;
-                time.setText(0 + "/" + amount);
+                title_tv.setVisibility(View.INVISIBLE);
+                time_tv.setVisibility(View.VISIBLE);
+                start_play_button.setVisibility(View.GONE);
+                note_playing_counter = 0;
+                time_tv.setText(note_playing_counter + "/" + amount);
 
                 permission();
                 tuner();
 
                 delay(1000);
-                time.setVisibility(View.VISIBLE);
-                index_++;
+                time_tv.setVisibility(View.VISIBLE);
+                graph_index++;
             }
         });
-
     }
 
     public void find(){
-        general = findViewById(R.id.play_general);
-        doReMi = findViewById(R.id.do_re_mi);
+        play_general_layout = findViewById(R.id.play_general);
+        doReMi_buttons_on_play_screen_layout = findViewById(R.id.do_re_mi);
         back = findViewById(R.id.back);
 
-        Notes[5] = findViewById(R.id.text_la);
-        Notes[6] = findViewById(R.id.text_si);
-        Notes[0] = findViewById(R.id.text_do);
-        Notes[1] = findViewById(R.id.text_re);
-        Notes[2] = findViewById(R.id.text_mi);
-        Notes[3] = findViewById(R.id.text_fa);
-        Notes[4] = findViewById(R.id.text_sul);
+        notes_button_on_screen_array[5] = findViewById(R.id.text_la);
+        notes_button_on_screen_array[6] = findViewById(R.id.text_si);
+        notes_button_on_screen_array[0] = findViewById(R.id.text_do);
+        notes_button_on_screen_array[1] = findViewById(R.id.text_re);
+        notes_button_on_screen_array[2] = findViewById(R.id.text_mi);
+        notes_button_on_screen_array[3] = findViewById(R.id.text_fa);
+        notes_button_on_screen_array[4] = findViewById(R.id.text_sul);
 
         image_key = findViewById(R.id.g_key);
 
-        title = findViewById(R.id.title);
-        time = findViewById(R.id.time_left);
-        start = findViewById(R.id.btn);
+        title_tv = findViewById(R.id.title);
+        time_tv = findViewById(R.id.time_left);
+        start_play_button = findViewById(R.id.btn);
 
     }
-
-
 
     public void start_notes(){
-        if(!outIsClicked) {
 
-            int num = gameSequens[gameSequensIndex];
-            VOICE_FLAGE = false;
-            doReMiFlage = num; // for the click compare
+        Log.d(TAG, "//////////////////////////////////////////////////////////////////////\n" +
+                        "////  " +  musicNoteList.toString() + "  ///\n" +
+                        "//////////////////////////////////////////////////////////////////////\n");
 
-            if (16 > num && num > 4) {
-                note = findViewById(images[num]);
-                setFrequency(2, freq[num]);
-                current_freq = freq[num];
-                note.setVisibility(View.VISIBLE);
-                startTranslation(note);
+        if(!out_is_clicked) {
 
-            } else {
 
-                noteLayout = findViewById(images[num]);
-                layoutImage = findViewById(layoutImages[num]);
-                layoutImage.setImageResource(R.drawable.quarter_note);
-                layoutImage.setPadding(0, 0, 0, 0);
-                setFrequency(2, freq[num]);
-                current_freq = freq[num];
-                noteLayout.setVisibility(View.VISIBLE);
-                startTranslation(noteLayout);
+
+                id_of_playing_note = musicNoteList.get(musicNoteList_index).getNote_display_id();
+                int note_image_res = musicNoteList.get(musicNoteList_index).getNote_image();
+                double note_duration = musicNoteList.get(musicNoteList_index).getNote_duration();
+                double note_frequency = musicNoteList.get(musicNoteList_index).getNote_frequency();
+
+                if (16 > id_of_playing_note && id_of_playing_note > 4) {
+                    note_image = findViewById(images[id_of_playing_note]);
+                    setFrequency(2, note_frequency);
+                    note_image.setVisibility(View.VISIBLE);
+                    startTranslation(note_image);
+                } else {
+
+                    noteLayout = findViewById(images[id_of_playing_note]);
+                    layoutImage = findViewById(layoutImages[id_of_playing_note]);
+                    layoutImage.setImageResource(note_image_res);
+                    layoutImage.setPadding(0, 0, 0, 0);
+                    setFrequency(2, freq[id_of_playing_note]);
+                    noteLayout.setVisibility(View.VISIBLE);
+                    startTranslation(noteLayout);
+                }
+
+                is_star_happen = true;
+                note_playing_counter++;
             }
-            isStarClicked = true;
 
-            cnt++;
 
-        }if(cnt < gameSequens.length && !outIsClicked){
-            timer();
+            if (note_playing_counter < musicNoteList.size() && !out_is_clicked){ timer();
+            }else {
+                delay();
+                note_playing_counter = 0;}
 
-        }else{
-            delay();
-            cnt = 0;
-        }
+
+
+//            int num = gameSequens[gameSequensIndex];
+//            VOICE_FLAGE = false;
+//            id_of_playing_note = num; // for the click compare
+//
+//            if (16 > num && num > 4) {
+//                note_image = findViewById(images[num]);
+//                setFrequency(2, freq[num]);
+//                current_freq = freq[num];
+//                note_image.setVisibility(View.VISIBLE);
+//                startTranslation(note_image);
+//
+//            } else {
+//
+//                noteLayout = findViewById(images[num]);
+//                layoutImage = findViewById(layoutImages[num]);
+//                layoutImage.setImageResource(R.drawable.quarter_note);
+//                layoutImage.setPadding(0, 0, 0, 0);
+//                setFrequency(2, freq[num]);
+//                current_freq = freq[num];
+//                noteLayout.setVisibility(View.VISIBLE);
+//                startTranslation(noteLayout);
+//            }
+//
+//                is_star_happen = true;
+//                note_playing_counter++;
+
+//        }if(note_playing_counter < gameSequens.length && !out_is_clicked){
+//            timer();
+//
+//        }else{
+//            delay();
+//            note_playing_counter = 0;
+//        }
 
     }
-
 
     public void startTranslation(ImageView img){
 
@@ -613,7 +647,7 @@ public class PlayActivity extends AppCompatActivity {
         return width;
     }
 
-    public void setFrequency(int duration , int freq){
+    public void setFrequency(int duration , double freq){
         final int sampleRate = 22050;
         final int numSamples = duration * sampleRate;
         final double samples[] = new double[numSamples];
@@ -635,41 +669,41 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
-
-
     public void findNotes(){
-        time.setText(sum + "/" + amount);
 
+
+        /**                                              _________________________
+         * this function connect between Buttons array ( |do|re|mi|fa|sol|la|si| )
+         * to frequency. more over this function in charge of give the user feedback
+         * when he or she press the note button
+         * */
+
+        time_tv.setText(sum + "/" + amount);
+        amount = musicNoteList.size();
         for (int i = 0; i < 7; i++){
             int temp = 0;
-            if (b5){  temp = i + 2 ;}
-            else{temp = i + 4 ;}
-            final int index = temp ;
+            if (key){  temp = i + 2 ;}
+            else{temp = i + 4 ;}  // because do or C is the 4th note on the freq table
+            final int button_freq_index = temp ;
 
-
-            Notes[i].setOnClickListener(new View.OnClickListener() {
+            notes_button_on_screen_array[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    setFrequency(2, freq[button_freq_index]);
 
-                    setFrequency(2, freq[index]);
-                    Log.d(TAG, "onClick:                " + doReMiFlage  + "            " + index );
-                    //time.setText(sum + "/" + amount);
+                    if (is_star_happen) {
+                        if (button_freq_index - 7 == id_of_playing_note || button_freq_index == id_of_playing_note || button_freq_index + 7 == id_of_playing_note || button_freq_index + 14 == id_of_playing_note) {
 
-                    if (isStarClicked) {
-                        if (index - 7 == doReMiFlage || index == doReMiFlage || index + 7 == doReMiFlage || index + 14 == doReMiFlage) {
-
-                            Log.d(TAG, "onClick:                +1            ");
-                            isStarClicked = false;
+                            is_star_happen = false;
                             sum++;
                             percent = (sum/amount)*100;
-                            time.setText(sum + "/" + amount);
+                            time_tv.setText(sum + "/" + amount);
 
-                            if (16 > doReMiFlage && doReMiFlage > 4) {
-                                note.setImageResource(R.drawable.star_yellow);
+                            if (16 > id_of_playing_note && id_of_playing_note > 4) {
+                                note_image.setImageResource(R.drawable.star_yellow);
                             } else {
                                 //layoutImage.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
                                 layoutImage.setPadding(0, 100, 0, 100);
-
                                 layoutImage.setImageResource(R.drawable.star_yellow);
                             }
                         }
@@ -678,7 +712,6 @@ public class PlayActivity extends AppCompatActivity {
             });
         }
     }
-
 
 
     public void timer(){
@@ -691,12 +724,12 @@ public class PlayActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if (16 > doReMiFlage && doReMiFlage > 4){
-                  note = findViewById(images[doReMiFlage]);
-                    note.setVisibility(View.INVISIBLE);
-                    note.setImageResource(R.drawable.quarter_note);
+                if (16 > id_of_playing_note && id_of_playing_note > 4){
+                  note_image = findViewById(images[id_of_playing_note]);
+                    note_image.setVisibility(View.INVISIBLE);
+                    note_image.setImageResource(R.drawable.quarter_note);
                 }else {
-                    noteLayout = findViewById(images[doReMiFlage]);
+                    noteLayout = findViewById(images[id_of_playing_note]);
                     noteLayout.setVisibility(View.INVISIBLE);
                 }
 
@@ -716,7 +749,7 @@ public class PlayActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                doReMi.setVisibility(View.VISIBLE);
+                doReMi_buttons_on_play_screen_layout.setVisibility(View.VISIBLE);
                 start_notes();
             }
         }.start();
@@ -733,21 +766,21 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 gameSequensIndex++;
-                gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][gameStage]);
+                gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]);
 
-                start.setVisibility(View.GONE);
-                cnt = 0;
-                time.setText(0 + "/" + amount);
+                start_play_button.setVisibility(View.GONE);
+                note_playing_counter = 0;
+                time_tv.setText(0 + "/" + amount);
 
                 permission();
                 tuner();
 
                 delay(1000);
-                time.setVisibility(View.VISIBLE);
-                index_++;
+                time_tv.setVisibility(View.VISIBLE);
+                graph_index++;
 
                 dialog.dismiss();
-                doReMi.setVisibility(View.GONE);
+                doReMi_buttons_on_play_screen_layout.setVisibility(View.GONE);
 
             }
         });
@@ -756,7 +789,7 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 dialog.dismiss();
-                doReMi.setVisibility(View.GONE);
+                doReMi_buttons_on_play_screen_layout.setVisibility(View.GONE);
             }
         });
 
@@ -773,31 +806,30 @@ public class PlayActivity extends AppCompatActivity {
     public void getData(){
 
         Intent intent = getIntent();
-        b1 = intent.getBooleanExtra("b1", false);
-        b2 = intent.getBooleanExtra("b2", false);
-        b3 = intent.getBooleanExtra("b3", false);
-        gameLevel = intent.getIntExtra("gameLevel",1); // easy hard master...
-        gameStage = intent.getIntExtra("stage",1) +1;     // in the level part, stage num(+1 because start from 1 not 0)
-        gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][gameStage]); // sec of notes
+        is_screen_on_enable = intent.getBooleanExtra("is_screen_on_enable", false);
+        is_night_mode_enable = intent.getBooleanExtra("is_night_mode_enable", false);
+        is_sound_enable = intent.getBooleanExtra("is_sound_enable", false);
+        game_level = intent.getIntExtra("game_level",1); // easy hard master...
+        game_stage = intent.getIntExtra("stage",1) +1;     // in the level part, stage num(+1 because start from 1 not 0)
+        gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]); // sec of notes
         amount = gameSequens.length;
-        Log.d(TAG, "getData:  ***********" + " b2: " + b2 + " b3: " + b3 + " b1: " + b1 + " gameSequens " + gameSequens[0] + gameSequens[1] + gameSequens[2]);
      }
 
     public void setNightMode(){
-        if (b2) {
-            general.setBackgroundColor(Color.parseColor("#585858"));
+        if (is_night_mode_enable) {
+            play_general_layout.setBackgroundColor(Color.parseColor("#585858"));
             for (int i = 0; i < 7; i++) {
-                Notes[i].setBackgroundColor(Color.parseColor("#585858"));
+                notes_button_on_screen_array[i].setBackgroundColor(Color.parseColor("#585858"));
             }
         }else{
-            general.setBackgroundColor(Color.parseColor("#ffffff"));
+            play_general_layout.setBackgroundColor(Color.parseColor("#ffffff"));
             for (int i = 0; i < 7; i++) {
-                Notes[i].setBackgroundColor(Color.parseColor("#ffffff"));
+                notes_button_on_screen_array[i].setBackgroundColor(Color.parseColor("#ffffff"));
             }
         }
     }
     public void setScreenOn(){
-        if (b1){
+        if (is_screen_on_enable){
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         else{
@@ -807,20 +839,20 @@ public class PlayActivity extends AppCompatActivity {
 
 
     public void setButtonsName( String s0 ,String s1, String s2, String s3, String s4, String s5, String s6 ){
-        Notes[0].setText(s0);
-        Notes[1].setText(s1);
-        Notes[2].setText(s2);
-        Notes[3].setText(s3);
-        Notes[4].setText(s4);
-        Notes[5].setText(s5);
-        Notes[6].setText(s6);
+        notes_button_on_screen_array[0].setText(s0);
+        notes_button_on_screen_array[1].setText(s1);
+        notes_button_on_screen_array[2].setText(s2);
+        notes_button_on_screen_array[3].setText(s3);
+        notes_button_on_screen_array[4].setText(s4);
+        notes_button_on_screen_array[5].setText(s5);
+        notes_button_on_screen_array[6].setText(s6);
 
     }
 
     public void setKey(){
-        int a  = 110;
-        if(b5) {
-            image_key.setPadding(-100, a, a, a);
+
+        if(key) {
+            image_key.setPadding(-100, 110, 110, 110);
             image_key.setImageResource(R.drawable.f_clef);
             setButtonsName( "do", "re", "mi", "fa", "sul", "la", "si");
             freq = freq_Clef_F;
@@ -875,7 +907,6 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void passData(){
-        Log.d(TAG, "passData: 000000000000000000");
         Intent intent = new Intent(this,StartActivity.class);
         intent.putExtra("play_acknowledge",true);
         startActivity(intent);
@@ -887,13 +918,13 @@ public class PlayActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(points);
         editor.putString(GRAPH_SCORE_ARRY,json);
-        editor.putInt(GRAPH_INDEX,index_);
+        editor.putInt(GRAPH_INDEX, graph_index);
         editor.apply();
     }
 
     public void loadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFES, MODE_PRIVATE);
-        index_ = sharedPreferences.getInt(GRAPH_INDEX,1);
+        graph_index = sharedPreferences.getInt(GRAPH_INDEX,1);
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString(GRAPH_SCORE_ARRY,null);
@@ -905,7 +936,7 @@ public class PlayActivity extends AppCompatActivity {
                 points[i] = new DataPoint(i, 0);
             }
         }
-          Log.d(TAG, "loadData: " + index_ + "+++++++++++++" + points[0] + points[1] + points[2] + points[3] + points[4] + points[5] );
+          Log.d(TAG, "loadData: " + graph_index + "+++++++++++++" + points[0] + points[1] + points[2] + points[3] + points[4] + points[5] );
 
     }
 
@@ -931,7 +962,7 @@ public class PlayActivity extends AppCompatActivity {
                 else{ percent = 0;}
 
                 Log.d(TAG, "start_notes:          " + sum + "/" + amount + "   " + percent + "%" );
-                if (!outIsClicked) {
+                if (!out_is_clicked) {
                     setGraph();
                     String s = "Excellent!";
                     if (percent == 0 ){ s = " You can do better " ;}
@@ -954,16 +985,16 @@ public class PlayActivity extends AppCompatActivity {
                     graphTitle.setText(s);
 
                     stageNum = v.findViewById(R.id.stage_num);
-                    stageNum.setText("STAGE - " + gameStage);
+                    stageNum.setText("STAGE - " + game_stage);
 
                     performance = v.findViewById(R.id.performance);
                     performance.setText(sum + "/" + amount + " " + percent + "%");
 
                     setStarsRate();
 
-                    start.setVisibility(View.VISIBLE);
-                    title.setVisibility(View.VISIBLE);
-                    doReMi.setVisibility(View.GONE);
+                    start_play_button.setVisibility(View.VISIBLE);
+                    title_tv.setVisibility(View.VISIBLE);
+                    doReMi_buttons_on_play_screen_layout.setVisibility(View.GONE);
 
 
                 }
@@ -983,12 +1014,12 @@ public class PlayActivity extends AppCompatActivity {
 
 
 
-        for (int i = index_; i < points.length; i++) {
+        for (int i = graph_index; i < points.length; i++) {
             points[i] = new DataPoint(i, 0);
         }
-        points[index_] = new DataPoint(index_, percent);
+        points[graph_index] = new DataPoint(graph_index, percent);
 
-        Log.d(TAG, "loadData: " + index_ + "+++++++++++++" + points[0] + points[1] + points[2] + points[3] + points[4] + points[5] );
+        Log.d(TAG, "loadData: " + graph_index + "+++++++++++++" + points[0] + points[1] + points[2] + points[3] + points[4] + points[5] );
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(points);
 
@@ -999,7 +1030,7 @@ public class PlayActivity extends AppCompatActivity {
 
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(index_);
+        graph.getViewport().setMaxX(graph_index);
 
 
         // enable scaling and scrolling
@@ -1014,8 +1045,8 @@ public class PlayActivity extends AppCompatActivity {
         graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
         graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
 
-        if (index_ == 9999){
-            index_ = 0;
+        if (graph_index == 9999){
+            graph_index = 0;
             saveData();
         }
 
@@ -1060,7 +1091,7 @@ public class PlayActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                outIsClicked = true;
+                out_is_clicked = true;
                 passData();
             }
         });
@@ -1068,7 +1099,7 @@ public class PlayActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        outIsClicked = true;
+        out_is_clicked = true;
         passData();
          super.onBackPressed();
 
@@ -1134,14 +1165,14 @@ public class PlayActivity extends AppCompatActivity {
 
     public void processPitch(float pitchInHz ) {
 
-        title.setText("" + pitchInHz);
+        title_tv.setText("" + pitchInHz);
 
         //Log.d(TAG, "processPitch: " + (int)pitchInHz + " ---- " + current_freq);
 
         if (!VOICE_FLAGE){
             if(pitchInHz -3 < current_freq && pitchInHz + 3 > current_freq){
-                if (16 > doReMiFlage && doReMiFlage > 4) {
-                    note.setImageResource(R.drawable.star_yellow);
+                if (16 > id_of_playing_note && id_of_playing_note > 4) {
+                    note_image.setImageResource(R.drawable.star_yellow);
                 } else {
                     //layoutImage.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
                     layoutImage.setPadding(0, 100, 0, 100);
@@ -1149,7 +1180,7 @@ public class PlayActivity extends AppCompatActivity {
                 }
                 VOICE_FLAGE = true;
                 sum++;
-                time.setText(sum + "/" + amount);
+                time_tv.setText(sum + "/" + amount);
 
             }
         }
@@ -1197,19 +1228,18 @@ public class PlayActivity extends AppCompatActivity {
 
     public void musicNoteSetup(int stage){
 
+            String note_splits_data[] = musicNotesData[stage].split(", ");
 
-
-            String tmp_arr[] = musicNotesData[stage].split(", ");
-
-            for (int j = 0; j < tmp_arr.length; j++) {
-                String sub_temp_arr[] = tmp_arr[j].split("-");
-                MusicNote note = new MusicNote(sub_temp_arr[0], Double.parseDouble(sub_temp_arr[1]),Integer.parseInt(sub_temp_arr[2]),1);
+            for (int i = 0; i < note_splits_data.length; i++) {
+                String sub_temp_arr[] = note_splits_data[i].split("-");
+                MusicNote note = new MusicNote(
+                        sub_temp_arr[0],
+                        Double.parseDouble(sub_temp_arr[1]),
+                        Integer.parseInt(sub_temp_arr[2]),
+                        //Integer.parseInt(sub_temp_arr[3]),
+                        1);
                 musicNoteList.add(note);
             }
-
-
-
-
 
     }
 

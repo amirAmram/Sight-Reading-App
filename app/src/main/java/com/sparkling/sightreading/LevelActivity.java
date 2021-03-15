@@ -21,9 +21,10 @@ public class LevelActivity extends AppCompatActivity {
     CardView level_3;
     CardView level_4;
 
-    boolean b1;
-    boolean b2;
-    boolean b3;
+    boolean is_screen_on_enable;
+    boolean is_night_mode_enable;
+    boolean is_sound_enable;
+
 
 
     final int [] levels_images = new int[] {
@@ -91,10 +92,6 @@ public class LevelActivity extends AppCompatActivity {
                 setStageGrid(levels_images, levels_names, 1);
             }
         });
-
-
-
-
     }
 
     public void makeCardsGone(){
@@ -107,7 +104,7 @@ public class LevelActivity extends AppCompatActivity {
     public void setStageGrid(int[] images, String[] names, int level){
         stages_gridView = findViewById(R.id.stages_grid_view);
         stages_gridView.setVisibility(View.VISIBLE);
-        adapter = new RecyclerAdapter(LevelActivity.this, names, images,level, b1, b2,  b3);
+        adapter = new RecyclerAdapter(LevelActivity.this, names, images,level, is_screen_on_enable, is_night_mode_enable,  is_sound_enable);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL,false );
         stages_gridView.setLayoutManager(gridLayoutManager);
         stages_gridView.setAdapter(adapter);
@@ -116,14 +113,13 @@ public class LevelActivity extends AppCompatActivity {
     public void getData(){
 
         Intent intent = getIntent();
-        b1 = intent.getBooleanExtra("b1", false);
-
-        b2 = intent.getBooleanExtra("b2", false);
-        b3 = intent.getBooleanExtra("b3", false);
+        is_screen_on_enable = intent.getBooleanExtra("is_screen_on_enable", false);
+        is_night_mode_enable = intent.getBooleanExtra("is_night_mode_enable", false);
+        is_sound_enable = intent.getBooleanExtra("is_sound_enable", false);
 
 //         gameSeq = intent.getStringExtra("NOTES_SEQUENCE");
 //         gameSequens = convertStringToIntArray(gameSeq);
-        Log.d(TAG, "getData:  ***********"  + " b2: " + b2 + " b3: " + b3 + " b1: " + b1);
+        Log.d(TAG, "getData:  ***********"  + " is_night_mode_enable: " + is_night_mode_enable + " is_sound_enable: " + is_sound_enable + " is_screen_on_enable: " + is_screen_on_enable);
 
 
     }

@@ -10,6 +10,11 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * This class is the opening of the app
+ * This class run the company logo and move to StartActivity
+ * */
+
 public class MainActivity extends AppCompatActivity {
   private static final String TAG = "MainActivity";
 

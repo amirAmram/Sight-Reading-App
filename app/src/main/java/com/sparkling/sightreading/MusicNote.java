@@ -58,16 +58,18 @@ public class MusicNote {
             }
         }
 
-//        for (int i = 0; i < NUMBER_OF_NOTES; i += 2) {
-//            if (octave_num == 3 && i > 2){
-//                note_display_id = i - 3; // because the first note is f3
+//        for (int imageView = 0; imageView < NUMBER_OF_NOTES; imageView += 2) {
+//            if (octave_num == 3 && imageView > 2){
+//                note_display_id = imageView - 3; // because the first note is f3
 //            }else if(octave_num > 3 ){
-//                note_display_id = (i + 4) + (7 * octave_num - 4); // (i + 4) because i start from the 4th num F3 to C4
+//                note_display_id = (imageView + 4) + (7 * octave_num - 4); // (imageView + 4) because imageView start from the 4th num F3 to C4
 //            }
 //            Log.d(TAG, "setup:       note_display_id = " + note_display_id);
 //
 //        }
     }
+
+    public int getNote_octave_num(){ return octave_num; }
 
     public int getNote_display_id(){
         return note_display_id;
@@ -107,5 +109,16 @@ public class MusicNote {
 
     public void setNote_frequency(double note_frequency) {
         this.note_frequency = note_frequency;
+    }
+
+    @Override
+    public String toString() {
+        return "MusicNote{" +
+                "octave_num=" + octave_num +
+                ", note_duration=" + note_duration +
+                ", note_frequency=" + note_frequency +
+                ", note_image=" + note_image +
+                ", note_display_id=" + note_display_id +
+                '}' + "\n\n";
     }
 }

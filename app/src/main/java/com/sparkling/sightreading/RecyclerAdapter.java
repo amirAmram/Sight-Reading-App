@@ -12,11 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
@@ -44,18 +39,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     String[] sArr;
     int[] iArr;
     int gameLevel;
-    boolean b2;
-    boolean b3;
-    boolean b1;
+    boolean is_screen_on_enable;
+    boolean is_night_mode_enable;
+    boolean is_sound_enable;
     Context context;
     LayoutInflater inflater;
 
-    public RecyclerAdapter(Context context, String[] sArr,  int[] iArr, int gameLevel, boolean b1, boolean b2, boolean b3){
+
+
+    public RecyclerAdapter(Context context, String[] sArr,  int[] iArr, int gameLevel,
+                           boolean is_screen_on_enable, boolean is_night_mode_enable, boolean is_sound_enable){
         this.sArr = sArr;
         this.iArr = iArr;
-        this.b2 = b2;
-        this.b3 = b3;
-        this.b1 = b1;
+        this.is_screen_on_enable = is_screen_on_enable;
+        this.is_night_mode_enable = is_night_mode_enable;
+        this.is_sound_enable = is_sound_enable;
         this.gameLevel = gameLevel;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -70,16 +68,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, final int position) {
-        holder.t.setText(sArr[position]);
-        holder.i.setImageResource(iArr[position]);
-        holder.c.setOnClickListener(new View.OnClickListener() {
+        holder.textView.setText(sArr[position]);
+        holder.imageView.setImageResource(iArr[position]);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PlayActivity.class);
-                intent.putExtra("b1", b1);
-                intent.putExtra("b2", b2);
-                intent.putExtra("b3", b3);
-                intent.putExtra("gameLevel", gameLevel );
+                intent.putExtra("is_screen_on_enable", is_screen_on_enable);
+                intent.putExtra("is_night_mode_enable", is_night_mode_enable);
+                intent.putExtra("is_sound_enable", is_sound_enable);
+                intent.putExtra("game_level", gameLevel );
                 intent.putExtra("stage", position);
                 context.startActivity(intent);
             }
@@ -94,16 +92,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView t;
-        ImageView i;
-        CardView c;
+        TextView textView;
+        ImageView imageView;
+        CardView cardView;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            t = itemView.findViewById(R.id.card_text);
-            i = itemView.findViewById(R.id.card_image);
-            c = itemView.findViewById(R.id.card_view);
+            textView = itemView.findViewById(R.id.card_text);
+            imageView = itemView.findViewById(R.id.card_image);
+            cardView = itemView.findViewById(R.id.card_view);
         }
 
     }
