@@ -10,9 +10,12 @@ public class MusicNote {
 
 
     final int NUMBER_OF_NOTES = 12;
-
-    String note_names_flat[] = {"Do", "Re♭", "Re", "mi♭", "mi", "fa", "sol♭", "sol", "la♭", "la", "si♭", "si"};
-    String note_names_sharp[] = {"Do","Do#", "Re", "Re#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"};
+    int note_display_ids[][] = {
+            {-1, -1, -1, -1, -1, 0, 0, 1, 1, 2, 2, 3 },
+            { 4, 4, 5, 5, 6, 7, 7, 8, 8, 9, 9, 10} //+ 7 every time
+    };
+    String note_names_flat[] = {"Do", "Re♭", "Re", "Mi♭", "Mi", "Fa", "Sol♭", "Sol", "La♭", "La", "Si♭", "Si"};
+    String note_names_sharp[] = {"Do","Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si"};
     double note_frequencies[] = {16.35, 17.32, 18.35, 19.45, 20.60, 21.83, 23.12, 24.50, 25.96, 27.50, 29.14, 30.87}; // C
     double note_durations[] = {0.75, 0.5, 0.375, 0.25, 0.125, 0.0625, 0.03125};
     int note_images[] = {
@@ -34,11 +37,10 @@ public class MusicNote {
     private int note_display_id = -1;
 
 
-    public MusicNote(String note_name, double note_duration, int octave_num, int note_display_id){
+    public MusicNote(String note_name, double note_duration, int octave_num){
        this.note_name = note_name;
        this.note_duration = note_duration;
        this.octave_num = octave_num;
-       this.note_display_id = note_display_id;
        setup();
     }
 
@@ -47,6 +49,16 @@ public class MusicNote {
 
             if (note_name.equals(note_names_sharp[i])){
                 note_frequency = Math.pow(2, octave_num) * note_frequencies[i]; //set the frequency,increase x2 from the previous frequency
+
+                if (octave_num == 3 && i > 4){
+                    note_display_id = note_display_ids[0][i];
+                }else {
+                    if (octave_num > 3) {
+                        Log.d(TAG, "setup: values:\n\t index: " + i + " \n\t note_display_ids[1][i]" +note_display_ids[1][i]);
+                        note_display_id = note_display_ids[1][i] + (7 * (octave_num - 4)); //because minimal the octave num for the displays notes is 3 and this one abouve
+                    }
+                }
+
                 break;
             }
         }
@@ -70,6 +82,10 @@ public class MusicNote {
     }
 
     public int getNote_octave_num(){ return octave_num; }
+
+    public void setNote_display_id(int note_display_id) {
+        this.note_display_id = note_display_id;
+    }
 
     public int getNote_display_id(){
         return note_display_id;
@@ -121,4 +137,16 @@ public class MusicNote {
                 ", note_display_id=" + note_display_id +
                 '}' + "\n\n";
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }

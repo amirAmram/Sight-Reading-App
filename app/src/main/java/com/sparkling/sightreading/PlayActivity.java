@@ -421,7 +421,8 @@ public class PlayActivity extends AppCompatActivity {
 
     ImageView image_key;
 
-    int rate = 2500;
+    int note_rate;
+    int tempo_of_stage = 60;
 
     DataPoint[] points = new DataPoint[100];
     int graph_index = -1;
@@ -437,50 +438,17 @@ public class PlayActivity extends AppCompatActivity {
     boolean VOICE_FLAGE = false;
 
 
-    String[][] NOTES_SEQUENCE = new String[][]{
-            {
-                    "1 2 3",//0-20
-                    "1 1 1",
-                    "2 2 2",
-                    "3 3 3",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-            },
-            {
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-                    "1 2 3 4 5 6 7 8",
-            }
 
-    };
 
 
     String musicNotesData[] = {
         //   note_name-note_frequency-octave|
-        "Do-0.25-3, Re-0.50-4, Mi-0.25-3, Do-0.25-3, Re-0.50-2, Mi-0.25-2, Do-0.25-2, Re-0.50-2, Mi-0.25-2, ",
-        "Do-0.25-2, Re-0.50-2, Mi-0.25-2, ",
+        "Sol-0.25-4, Mi-0.25-4, Mi-0.50-4, Fa-0.25-4, Re-0.25-4, Re-0.50-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, ",
+        "Fa-0.25-4, Sol-0.50-4, Sol-0.25-4, ",
     };
 
 
     ArrayList<MusicNote> musicNoteList = new ArrayList<>();
-    int musicNoteList_index = 0;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -541,18 +509,17 @@ public class PlayActivity extends AppCompatActivity {
 
     public void start_notes(){
 
-        Log.d(TAG, "//////////////////////////////////////////////////////////////////////\n" +
-                        "////  " +  musicNoteList.toString() + "  ///\n" +
-                        "//////////////////////////////////////////////////////////////////////\n");
 
         if(!out_is_clicked) {
 
+                id_of_playing_note = musicNoteList.get(note_playing_counter).getNote_display_id();
+                int note_image_res = musicNoteList.get(note_playing_counter).getNote_image();
+                double note_duration = musicNoteList.get(note_playing_counter).getNote_duration();
+                double note_frequency = musicNoteList.get(note_playing_counter).getNote_frequency();
 
+                note_rate = (int)(bitToMs(tempo_of_stage)* 4 * note_duration);  //determent the tempo of the game(cast the tempo to millisecond)
+                                                                                // I multiple by 4 because the basic temp is for quoter and I wont 1
 
-                id_of_playing_note = musicNoteList.get(musicNoteList_index).getNote_display_id();
-                int note_image_res = musicNoteList.get(musicNoteList_index).getNote_image();
-                double note_duration = musicNoteList.get(musicNoteList_index).getNote_duration();
-                double note_frequency = musicNoteList.get(musicNoteList_index).getNote_frequency();
 
                 if (16 > id_of_playing_note && id_of_playing_note > 4) {
                     note_image = findViewById(images[id_of_playing_note]);
@@ -574,47 +541,10 @@ public class PlayActivity extends AppCompatActivity {
                 note_playing_counter++;
             }
 
-
             if (note_playing_counter < musicNoteList.size() && !out_is_clicked){ timer();
             }else {
                 delay();
                 note_playing_counter = 0;}
-
-
-
-//            int num = gameSequens[gameSequensIndex];
-//            VOICE_FLAGE = false;
-//            id_of_playing_note = num; // for the click compare
-//
-//            if (16 > num && num > 4) {
-//                note_image = findViewById(images[num]);
-//                setFrequency(2, freq[num]);
-//                current_freq = freq[num];
-//                note_image.setVisibility(View.VISIBLE);
-//                startTranslation(note_image);
-//
-//            } else {
-//
-//                noteLayout = findViewById(images[num]);
-//                layoutImage = findViewById(layoutImages[num]);
-//                layoutImage.setImageResource(R.drawable.quarter_note);
-//                layoutImage.setPadding(0, 0, 0, 0);
-//                setFrequency(2, freq[num]);
-//                current_freq = freq[num];
-//                noteLayout.setVisibility(View.VISIBLE);
-//                startTranslation(noteLayout);
-//            }
-//
-//                is_star_happen = true;
-//                note_playing_counter++;
-
-//        }if(note_playing_counter < gameSequens.length && !out_is_clicked){
-//            timer();
-//
-//        }else{
-//            delay();
-//            note_playing_counter = 0;
-//        }
 
     }
 
@@ -715,7 +645,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
     public void timer(){
-        new CountDownTimer(rate,1000){
+        new CountDownTimer(note_rate,1000){
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -766,7 +696,7 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 gameSequensIndex++;
-                gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]);
+                //gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]);
 
                 start_play_button.setVisibility(View.GONE);
                 note_playing_counter = 0;
@@ -801,8 +731,6 @@ public class PlayActivity extends AppCompatActivity {
        return (60000/(bitRate + 1)) ;
     }
 
-
-
     public void getData(){
 
         Intent intent = getIntent();
@@ -811,8 +739,8 @@ public class PlayActivity extends AppCompatActivity {
         is_sound_enable = intent.getBooleanExtra("is_sound_enable", false);
         game_level = intent.getIntExtra("game_level",1); // easy hard master...
         game_stage = intent.getIntExtra("stage",1) +1;     // in the level part, stage num(+1 because start from 1 not 0)
-        gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]); // sec of notes
-        amount = gameSequens.length;
+       // gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]); // sec of notes
+      //  amount = gameSequens.length;
      }
 
     public void setNightMode(){
@@ -942,7 +870,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
     public void delay(){
-        new CountDownTimer(rate,1000){
+        new CountDownTimer(note_rate,1000){
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -1235,12 +1163,12 @@ public class PlayActivity extends AppCompatActivity {
                 MusicNote note = new MusicNote(
                         sub_temp_arr[0],
                         Double.parseDouble(sub_temp_arr[1]),
-                        Integer.parseInt(sub_temp_arr[2]),
-                        //Integer.parseInt(sub_temp_arr[3]),
-                        1);
+                        Integer.parseInt(sub_temp_arr[2])
+                );
+
                 musicNoteList.add(note);
             }
 
-    }
+              }
 
 }
