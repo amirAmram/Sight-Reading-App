@@ -73,7 +73,9 @@ public class PlayActivity extends AppCompatActivity {
 
 
     LinearLayout doReMi_buttons_on_play_screen_layout;
-    int id_of_playing_note = -1;
+
+
+
 
     AlertDialog alertDialog;
     TextView performance;
@@ -87,15 +89,18 @@ public class PlayActivity extends AppCompatActivity {
     TextView title_tv;
     TextView time_tv;
     ImageView note_image;
-    RelativeLayout noteLayout;
+    RelativeLayout note_layout;
     ImageView layoutImage;
     Button start_play_button;
     ImageView back;
 
 
     Random r = new Random();
-    final int [] images = new int[] {
-            R.id.f0, //1
+
+    int [] layout_images = new int[20];
+
+    final int [] layout_images_redundancy_0 = new int[] {
+                  R.id.f0, //1
             R.id.g0, //2
             R.id.a0, //3
             R.id.b0, //4
@@ -117,9 +122,103 @@ public class PlayActivity extends AppCompatActivity {
             R.id.d3, //20
             R.id.e3  //21
     };
+    final int [] layout_images_redundancy_1 = new int[] {
+            R.id.f0_backup_1, //1
+            R.id.g0_backup_1, //2
+            R.id.a0_backup_1, //3
+            R.id.b0_backup_1, //4
+            R.id.c1_backup_1, //5
+            R.id.d1_backup_1, //6
+            R.id.e1_backup_1, //7
+            R.id.f1_backup_1, //8
+            R.id.g1_backup_1, //9
+            R.id.a1_backup_1, //10
+            R.id.b1_backup_1, //11
+            R.id.c2_backup_1, //12
+            R.id.d2_backup_1, //13
+            R.id.e2_backup_1, //14
+            R.id.f2_backup_1, //15
+            R.id.g2_backup_1, //16
+            R.id.a2_backup_1, //17
+            R.id.b2_backup_1, //18
+            R.id.c3_backup_1, //19
+            R.id.d3_backup_1, //20
+            R.id.e3_backup_1  //21
+    };
+    final int [] layout_images_redundancy_2 = new int[] {
+            R.id.f0_backup_2, //1
+            R.id.g0_backup_2, //2
+            R.id.a0_backup_2, //3
+            R.id.b0_backup_2, //4
+            R.id.c1_backup_2, //5
+            R.id.d1_backup_2, //6
+            R.id.e1_backup_2, //7
+            R.id.f1_backup_2, //8
+            R.id.g1_backup_2, //9
+            R.id.a1_backup_2, //10
+            R.id.b1_backup_2, //11
+            R.id.c2_backup_2, //12
+            R.id.d2_backup_2, //13
+            R.id.e2_backup_2, //14
+            R.id.f2_backup_2, //15
+            R.id.g2_backup_2, //16
+            R.id.a2_backup_2, //17
+            R.id.b2_backup_2, //18
+            R.id.c3_backup_2, //19
+            R.id.d3_backup_2, //20
+            R.id.e3_backup_2  //21
+    };
+    final int [] layout_images_redundancy_3 = new int[] {
+            R.id.f0_backup_3, //1
+            R.id.g0_backup_3, //2
+            R.id.a0_backup_3, //3
+            R.id.b0_backup_3, //4
+            R.id.c1_backup_3, //5
+            R.id.d1_backup_3, //6
+            R.id.e1_backup_3, //7
+            R.id.f1_backup_3, //8
+            R.id.g1_backup_3, //9
+            R.id.a1_backup_3, //10
+            R.id.b1_backup_3, //11
+            R.id.c2_backup_3, //12
+            R.id.d2_backup_3, //13
+            R.id.e2_backup_3, //14
+            R.id.f2_backup_3, //15
+            R.id.g2_backup_3, //16
+            R.id.a2_backup_3, //17
+            R.id.b2_backup_3, //18
+            R.id.c3_backup_3, //19
+            R.id.d3_backup_3, //20
+            R.id.e3_backup_3  //21
+    };
+    final int [] layout_images_redundancy_4 = new int[] {
+            R.id.f0_backup_4, //1
+            R.id.g0_backup_4, //2
+            R.id.a0_backup_4, //3
+            R.id.b0_backup_4, //4
+            R.id.c1_backup_4, //5
+            R.id.d1_backup_4, //6
+            R.id.e1_backup_4, //7
+            R.id.f1_backup_4, //8
+            R.id.g1_backup_4, //9
+            R.id.a1_backup_4, //10
+            R.id.b1_backup_4, //11
+            R.id.c2_backup_4, //12
+            R.id.d2_backup_4, //13
+            R.id.e2_backup_4, //14
+            R.id.f2_backup_4, //15
+            R.id.g2_backup_4, //16
+            R.id.a2_backup_4, //17
+            R.id.b2_backup_4, //18
+            R.id.c3_backup_4, //19
+            R.id.d3_backup_4, //20
+            R.id.e3_backup_4  //21
+    };
 
-    final int [] layoutImages = new int[] {
-            R.id.f0_image,
+    int [] images = new int[20];
+
+    final int [] images_redundancy_0 = new int[] {
+                  R.id.f0_image,
             R.id.g0_image,
             R.id.a0_image,
             R.id.b0_image,
@@ -141,6 +240,99 @@ public class PlayActivity extends AppCompatActivity {
             R.id.d3_image,
             R.id.e3_image,
     };
+    final int [] images_redundancy_1 = new int[] {
+            R.id.f0_image_backup_1,
+            R.id.g0_image_backup_1,
+            R.id.a0_image_backup_1,
+            R.id.b0_image_backup_1,
+            R.id.c1_image_backup_1, //5
+            R.id.d1_backup_1, //6
+            R.id.e1_backup_1, //7
+            R.id.f1_backup_1, //8
+            R.id.g1_backup_1, //9
+            R.id.a1_backup_1, //10
+            R.id.b1_backup_1, //11
+            R.id.c2_backup_1, //12
+            R.id.d2_backup_1, //13
+            R.id.e2_backup_1, //14
+            R.id.f2_backup_1, //15
+            R.id.g2_backup_1, //16
+            R.id.a2_image_backup_1,
+            R.id.b2_image_backup_1,
+            R.id.c3_image_backup_1,
+            R.id.d3_image_backup_1,
+            R.id.e3_image_backup_1,
+    };
+    final int [] images_redundancy_2 = new int[] {
+            R.id.f0_image_backup_2,
+            R.id.g0_image_backup_2,
+            R.id.a0_image_backup_2,
+            R.id.b0_image_backup_2,
+            R.id.c1_image_backup_2, //5
+            R.id.d1_backup_2, //6
+            R.id.e1_backup_2, //7
+            R.id.f1_backup_2, //8
+            R.id.g1_backup_2, //9
+            R.id.a1_backup_2, //10
+            R.id.b1_backup_2, //11
+            R.id.c2_backup_2, //12
+            R.id.d2_backup_2, //13
+            R.id.e2_backup_2, //14
+            R.id.f2_backup_2, //15
+            R.id.g2_backup_2, //16
+            R.id.a2_image_backup_2,
+            R.id.b2_image_backup_2,
+            R.id.c3_image_backup_2,
+            R.id.d3_image_backup_2,
+            R.id.e3_image_backup_2,
+    };
+    final int [] images_redundancy_3 = new int[] {
+            R.id.f0_image_backup_3,
+            R.id.g0_image_backup_3,
+            R.id.a0_image_backup_3,
+            R.id.b0_image_backup_3,
+            R.id.c1_image_backup_3, //5
+            R.id.d1_backup_3, //6
+            R.id.e1_backup_3, //7
+            R.id.f1_backup_3, //8
+            R.id.g1_backup_3, //9
+            R.id.a1_backup_3, //10
+            R.id.b1_backup_3, //11
+            R.id.c2_backup_3, //12
+            R.id.d2_backup_3, //13
+            R.id.e2_backup_3, //14
+            R.id.f2_backup_3, //15
+            R.id.g2_backup_3, //16
+            R.id.a2_image_backup_3,
+            R.id.b2_image_backup_3,
+            R.id.c3_image_backup_3,
+            R.id.d3_image_backup_3,
+            R.id.e3_image_backup_3,
+    };
+    final int [] images_redundancy_4 = new int[] {
+            R.id.f0_image_backup_4,
+            R.id.g0_image_backup_4,
+            R.id.a0_image_backup_4,
+            R.id.b0_image_backup_4,
+            R.id.c1_image_backup_4, //5
+            R.id.d1_backup_4, //6
+            R.id.e1_backup_4, //7
+            R.id.f1_backup_4, //8
+            R.id.g1_backup_4, //9
+            R.id.a1_backup_4, //10
+            R.id.b1_backup_4, //11
+            R.id.c2_backup_4, //12
+            R.id.d2_backup_4, //13
+            R.id.e2_backup_4, //14
+            R.id.f2_backup_4, //15
+            R.id.g2_backup_4, //16
+            R.id.a2_image_backup_4,
+            R.id.b2_image_backup_4,
+            R.id.c3_image_backup_4,
+            R.id.d3_image_backup_4,
+            R.id.e3_image_backup_4,
+    };
+
 
     final int [] freq_F = new int[] {
             174,  //f0
@@ -422,9 +614,9 @@ public class PlayActivity extends AppCompatActivity {
     ImageView image_key;
 
     int note_rate;
-    int tempo_of_stage = 60;
+    int tempo_of_stage = 50;
 
-    DataPoint[] points = new DataPoint[100];
+    DataPoint[] points = new DataPoint[1000];
     int graph_index = -1;
     View v;
 
@@ -436,16 +628,32 @@ public class PlayActivity extends AppCompatActivity {
     //      range of 3 both side --> ( -1 + 3, -1 - 3 ) so it could be -5 but I took extra
 
     boolean VOICE_FLAGE = false;
+    boolean START_SOUND_DETECT = false;
 
 
+    char redundancy_usage [] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
 
     String musicNotesData[] = {
         //   note_name-note_frequency-octave|
-        "Sol-0.25-4, Mi-0.25-4, Mi-0.50-4, Fa-0.25-4, Re-0.25-4, Re-0.50-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, ",
-        "Fa-0.25-4, Sol-0.50-4, Sol-0.25-4, ",
-    };
+             //check
+            "Do-0.5-4, Re-0.25-4, Mi-0.125-4, Fa-0.0625-4, Sol-0.03125-4, La-0.0625-4, Si-0.125-4, Do-0.25-4, ",
+/*stage 1*/ "Do-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, ",
+            "Do-0.25-4, Do-0.25-4, Re-0.25-4, Re-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, ",
+            "Do-0.25-4, Re-0.25-4, Mi-0.25-4, Re-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.5-4, ",
+            "Do-0.5-4, Do-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Do-0.5-4, Do-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, ",
+            "Do-0.25-4, Mi-0.25-4, Do-0.25-4, Mi-0.25-4, Re-0.5-4, Re-0.5-4, Do-0.25-4, Mi-0.25-4, Do-0.25-4, Mi-0.25-4, Fa-0.5-4, Mi-0.5-4, ",
+            "Mi-0.25-4, Re-0.25-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, Mi-0.25-4, Mi-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.5-4, Mi-0.25-4, Mi-0.25-4, Mi-0.25-4, ",
+            "Sol-0.25-4, Mi-0.25-4, Mi-0.50-4, Fa-0.25-4, Re-0.25-4, Re-0.50-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, Fa-0.25-4, Sol-0.25-4, Sol-0.25-4, Sol-0.25-4, ",
+            "Fa-0.25-4, Sol-0.50-4, Sol-0.25-4, ",
+            "Sol-0.25-4, Sol-0.125-4, La-0.125-4, Si-0.25-4, Sol-0.25-4, Do-0.25-5, Mi-0.25-5, Re-0.125-5, Do-0.125-5, Si-0.125-4, La-0.125-4, Sol-0.125-4, ",
+};
+
+    int id_of_playing_note = -1;
+    int note_image_res;
+    double note_duration;
+    double note_frequency;
 
 
     ArrayList<MusicNote> musicNoteList = new ArrayList<>();
@@ -460,10 +668,10 @@ public class PlayActivity extends AppCompatActivity {
         back();
         getData();
         loadData();
-        musicNoteSetup(0); // this _0_ need to be change to the stage number
         setNightMode();
         setScreenOn();
         setKey();
+        musicNoteSetup(game_stage); // this _0_ need to be change to the stage number
 
         findNotes();
 
@@ -508,33 +716,41 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void start_notes(){
-
-
         if(!out_is_clicked) {
 
-                id_of_playing_note = musicNoteList.get(note_playing_counter).getNote_display_id();
-                int note_image_res = musicNoteList.get(note_playing_counter).getNote_image();
-                double note_duration = musicNoteList.get(note_playing_counter).getNote_duration();
-                double note_frequency = musicNoteList.get(note_playing_counter).getNote_frequency();
 
-                note_rate = (int)(bitToMs(tempo_of_stage)* 4 * note_duration);  //determent the tempo of the game(cast the tempo to millisecond)
+            id_of_playing_note = musicNoteList.get(note_playing_counter).getNote_display_id();
+            note_image_res = musicNoteList.get(note_playing_counter).getNote_image();
+            note_duration = musicNoteList.get(note_playing_counter).getNote_duration();
+            note_frequency = musicNoteList.get(note_playing_counter).getNote_frequency();
+
+            VOICE_FLAGE = false;
+
+             note_rate = (int)(bitToMs(tempo_of_stage)* 4 * note_duration);  //determent the tempo of the game(cast the tempo to millisecond)
                                                                                 // I multiple by 4 because the basic temp is for quoter and I wont 1
 
-
                 if (16 > id_of_playing_note && id_of_playing_note > 4) {
+                    set_redundancy_image_array(id_of_playing_note);
                     note_image = findViewById(images[id_of_playing_note]);
-                    setFrequency(2, note_frequency);
+                    note_image.setImageResource(note_image_res);
+                    if (!is_sound_enable){ setFrequency(2, note_frequency); } // because it is sound disable and not enable
                     note_image.setVisibility(View.VISIBLE);
                     startTranslation(note_image);
                 } else {
 
-                    noteLayout = findViewById(images[id_of_playing_note]);
-                    layoutImage = findViewById(layoutImages[id_of_playing_note]);
-                    layoutImage.setImageResource(note_image_res);
+                    Log.d(TAG, " \n  start_notes:  id = " + id_of_playing_note
+                            + "\n  note_image_res = " + note_image_res
+                            + "\n  note_duration = " + note_duration + "\n"
+                            + "\n  redundancy_usage = " + redundancy_usage[id_of_playing_note]);
+
+                    set_redundancy_image_layout_array(id_of_playing_note);
+                    note_layout = findViewById(layout_images[id_of_playing_note]);
+                    layoutImage = findViewById(images[id_of_playing_note]);
                     layoutImage.setPadding(0, 0, 0, 0);
-                    setFrequency(2, freq[id_of_playing_note]);
-                    noteLayout.setVisibility(View.VISIBLE);
-                    startTranslation(noteLayout);
+                    layoutImage.setImageResource(note_image_res);
+                    if (!is_sound_enable){ setFrequency(2, note_frequency); }
+                    note_layout.setVisibility(View.VISIBLE);
+                    startTranslation(note_layout);
                 }
 
                 is_star_happen = true;
@@ -544,7 +760,8 @@ public class PlayActivity extends AppCompatActivity {
             if (note_playing_counter < musicNoteList.size() && !out_is_clicked){ timer();
             }else {
                 delay();
-                note_playing_counter = 0;}
+                note_playing_counter = 0;
+            }
 
     }
 
@@ -572,8 +789,6 @@ public class PlayActivity extends AppCompatActivity {
         display.getSize(size);
         int width = size.x;
         int height = size.y;
-        Log.d("Width", "" + width);
-        Log.d("height", "" + height);
         return width;
     }
 
@@ -655,12 +870,13 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 if (16 > id_of_playing_note && id_of_playing_note > 4){
-                  note_image = findViewById(images[id_of_playing_note]);
+                    note_image = findViewById(images[id_of_playing_note]);
                     note_image.setVisibility(View.INVISIBLE);
-                    note_image.setImageResource(R.drawable.quarter_note);
+                    note_image.setImageResource(note_image_res);
                 }else {
-                    noteLayout = findViewById(images[id_of_playing_note]);
-                    noteLayout.setVisibility(View.INVISIBLE);
+                    note_layout = findViewById(layout_images[id_of_playing_note]);
+                    layoutImage = findViewById(images[id_of_playing_note]);
+                    note_layout.setVisibility(View.INVISIBLE);
                 }
 
 
@@ -705,12 +921,17 @@ public class PlayActivity extends AppCompatActivity {
                 permission();
                 tuner();
 
+                findNotes();
+                game_stage++;
+                musicNoteSetup(game_stage);
+
                 delay(1000);
                 time_tv.setVisibility(View.VISIBLE);
                 graph_index++;
 
                 dialog.dismiss();
                 doReMi_buttons_on_play_screen_layout.setVisibility(View.GONE);
+
 
             }
         });
@@ -741,6 +962,7 @@ public class PlayActivity extends AppCompatActivity {
         game_stage = intent.getIntExtra("stage",1) +1;     // in the level part, stage num(+1 because start from 1 not 0)
        // gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]); // sec of notes
       //  amount = gameSequens.length;
+
      }
 
     public void setNightMode(){
@@ -864,7 +1086,7 @@ public class PlayActivity extends AppCompatActivity {
                 points[i] = new DataPoint(i, 0);
             }
         }
-          Log.d(TAG, "loadData: " + graph_index + "+++++++++++++" + points[0] + points[1] + points[2] + points[3] + points[4] + points[5] );
+//          Log.d(TAG, "loadData: " + graph_index + "+++++++++++++" + points[0] + points[1] + points[2] + points[3] + points[4] + points[5] );
 
     }
 
@@ -973,7 +1195,7 @@ public class PlayActivity extends AppCompatActivity {
         graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
         graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
 
-        if (graph_index == 9999){
+        if (graph_index >= 999){
             graph_index = 0;
             saveData();
         }
@@ -1092,29 +1314,25 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void processPitch(float pitchInHz ) {
-
         title_tv.setText("" + pitchInHz);
 
-        //Log.d(TAG, "processPitch: " + (int)pitchInHz + " ---- " + current_freq);
+            if (!VOICE_FLAGE) {
+                if (pitchInHz - 3 < note_frequency && pitchInHz + 3 > note_frequency) {
+                    if (16 > id_of_playing_note && id_of_playing_note > 4) {
+                        note_image.setImageResource(R.drawable.star_yellow);
+                    } else {
+                        //layoutImage.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
+                        layoutImage.setPadding(0, 100, 0, 100);
+                        layoutImage.setImageResource(R.drawable.star_yellow);
+                    }
+                    VOICE_FLAGE = true;
+                    sum++;
+                    time_tv.setText(sum + "/" + amount);
 
-        if (!VOICE_FLAGE){
-            if(pitchInHz -3 < current_freq && pitchInHz + 3 > current_freq){
-                if (16 > id_of_playing_note && id_of_playing_note > 4) {
-                    note_image.setImageResource(R.drawable.star_yellow);
-                } else {
-                    //layoutImage.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
-                    layoutImage.setPadding(0, 100, 0, 100);
-                    layoutImage.setImageResource(R.drawable.star_yellow);
                 }
-                VOICE_FLAGE = true;
-                sum++;
-                time_tv.setText(sum + "/" + amount);
-
             }
-        }
+
     }
-
-
 
 
     public void tuner(){
@@ -1154,8 +1372,10 @@ public class PlayActivity extends AppCompatActivity {
         return iArr;
     }
 
-    public void musicNoteSetup(int stage){
+    public void musicNoteSetup(int stage) {
 
+        if (stage < musicNotesData.length) {
+            musicNoteList = new ArrayList<>();
             String note_splits_data[] = musicNotesData[stage].split(", ");
 
             for (int i = 0; i < note_splits_data.length; i++) {
@@ -1165,10 +1385,81 @@ public class PlayActivity extends AppCompatActivity {
                         Double.parseDouble(sub_temp_arr[1]),
                         Integer.parseInt(sub_temp_arr[2])
                 );
-
                 musicNoteList.add(note);
             }
 
-              }
+            id_of_playing_note = musicNoteList.get(note_playing_counter).getNote_display_id();
+            note_image_res = musicNoteList.get(note_playing_counter).getNote_image();
+            note_duration = musicNoteList.get(note_playing_counter).getNote_duration();
+            note_frequency = musicNoteList.get(note_playing_counter).getNote_frequency();
 
+            START_SOUND_DETECT = true; // it is mean start processPitch function- start to sample freq
+        } else {
+            //level error- the level data is not exist please restart the app
+            Toast.makeText(this, "Hi we some problem it will take us some time to fix please try again soon.", Toast.LENGTH_LONG).show();
+            start_play_button.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void set_redundancy_image_array(int note_id){
+
+        switch(redundancy_usage[note_id]) {
+            case 0:
+                images = images_redundancy_0;
+                redundancy_usage[note_id] = 1;
+                break;
+            case 1:
+                images = images_redundancy_1;
+                redundancy_usage[note_id] = 2;
+                break;
+            case 2:
+                images = images_redundancy_2;
+                redundancy_usage[note_id] = 3;
+                break;
+            case 3:
+                images = images_redundancy_3;
+                redundancy_usage[note_id] = 0;
+                break;
+            case 4:
+                images = images_redundancy_4;
+                redundancy_usage[note_id] = 0;
+                break;
+
+        }
+
+    }
+
+    public void set_redundancy_image_layout_array(int note_id){
+
+        switch(redundancy_usage[note_id]) {
+            case 0:
+                layout_images = layout_images_redundancy_0;
+                images = images_redundancy_0;
+                redundancy_usage[note_id] = 1;
+                break;
+            case 1:
+                layout_images = layout_images_redundancy_1;
+                images = images_redundancy_1;
+                redundancy_usage[note_id] = 2;
+                break;
+            case 2:
+                layout_images = layout_images_redundancy_2;
+                images = images_redundancy_2;
+                redundancy_usage[note_id] = 3;
+                break;
+            case 3:
+                layout_images = layout_images_redundancy_3;
+                images = images_redundancy_3;
+                redundancy_usage[note_id] = 4;
+                break;
+            case 4:
+                layout_images = layout_images_redundancy_4;
+                images = images_redundancy_4;
+                redundancy_usage[note_id] = 0;
+                break;
+
+        }
+
+
+    }
 }
