@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 
 public class LevelActivity extends AppCompatActivity {
     private static final String TAG = "LevelActivity";
@@ -25,6 +29,7 @@ public class LevelActivity extends AppCompatActivity {
     boolean is_night_mode_enable;
     boolean is_sound_enable;
 
+    RelativeLayout level_general_layout;
 
 
     final int [] levels_images = new int[] {
@@ -75,14 +80,13 @@ public class LevelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_level);
 
         getData();
-
-        level_1 = findViewById(R.id.level_1);
-        level_2 = findViewById(R.id.level_2);
-        level_3 = findViewById(R.id.level_3);
-        level_4 = findViewById(R.id.level_4);
+        find();
+        setNightMode();
+        setScreenOn();
 
 
         level_1.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +98,18 @@ public class LevelActivity extends AppCompatActivity {
         });
     }
 
+    public void find(){
+        level_general_layout = findViewById(R.id.level_general_layout);
+
+        level_1 = findViewById(R.id.level_1);
+        level_2 = findViewById(R.id.level_2);
+        level_3 = findViewById(R.id.level_3);
+        level_4 = findViewById(R.id.level_4);
+
+        stages_gridView = findViewById(R.id.stages_grid_view);
+
+    }
+
     public void makeCardsGone(){
         level_1.setVisibility(View.GONE);
         level_2.setVisibility(View.GONE);
@@ -102,7 +118,6 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     public void setStageGrid(int[] images, String[] names, int level){
-        stages_gridView = findViewById(R.id.stages_grid_view);
         stages_gridView.setVisibility(View.VISIBLE);
         adapter = new RecyclerAdapter(LevelActivity.this, names, images,level, is_screen_on_enable, is_night_mode_enable,  is_sound_enable);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL,false );
@@ -123,6 +138,34 @@ public class LevelActivity extends AppCompatActivity {
 
 
     }
+
+
+    public void setNightMode(){
+        if (is_night_mode_enable) {
+            level_general_layout.setBackgroundColor(Color.parseColor("#585858"));
+            level_1.setBackgroundColor(Color.parseColor("#585858"));
+            level_2.setBackgroundColor(Color.parseColor("#585858"));
+            level_3.setBackgroundColor(Color.parseColor("#585858"));
+            level_4.setBackgroundColor(Color.parseColor("#585858"));
+        }
+        else{ level_general_layout.setBackgroundColor(Color.parseColor("#ffffff"));
+            level_1.setBackgroundColor(Color.parseColor("#ffffff"));
+            level_2.setBackgroundColor(Color.parseColor("#ffffff"));
+            level_3.setBackgroundColor(Color.parseColor("#ffffff"));
+            level_4.setBackgroundColor(Color.parseColor("#ffffff"));
+
+        }
+    }
+
+    public void setScreenOn(){
+        if (is_screen_on_enable){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+        else{
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
+
 
 
 }

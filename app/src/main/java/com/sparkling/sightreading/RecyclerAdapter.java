@@ -2,6 +2,7 @@ package com.sparkling.sightreading;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             textView = itemView.findViewById(R.id.card_text);
             imageView = itemView.findViewById(R.id.card_image);
             cardView = itemView.findViewById(R.id.card_view);
+
+            setNightMode(cardView);
         }
 
+        public void setNightMode(CardView c){
+            if (is_night_mode_enable) {
+                c.setBackgroundColor(Color.parseColor("#585858"));
+            }
+            else{
+                c.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
+        }
     }
+
+
+
+
 }
