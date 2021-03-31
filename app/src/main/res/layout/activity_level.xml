@@ -8,6 +8,52 @@
     tools:context=".LevelActivity">
 
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="70dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="-9dp"
+        app:cardBackgroundColor="#00BCD4"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="2dp"
+            android:layout_marginBottom="6dp"
+            android:weightSum="99">
+
+            <ImageView
+                android:id="@+id/star_counter_image"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_weight="40"
+                android:src="@drawable/star_yellow"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="3dp"
+                android:gravity="center"
+                />
+            <TextView
+                android:id="@+id/star_counter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="999"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="16dp"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +63,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:foregroundGravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,6 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:text="Stages"
+            android:textColor="#000"
             android:textStyle="bold|italic"
             android:layout_gravity="center"
             android:textSize="30sp"/>
@@ -105,6 +153,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/level_lock_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/lock_ic"
@@ -147,6 +196,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/level_lock_3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/lock_ic"
@@ -191,6 +241,7 @@
                 />
 
             <ImageView
+                android:id="@+id/level_lock_4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/lock_ic"
@@ -203,8 +254,10 @@
             android:id="@+id/stages_grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:paddingRight="20dp"
+            android:layout_marginLeft="-10dp"
             android:visibility="gone"
+            android:layout_gravity="center"
             />
 
     </LinearLayout>

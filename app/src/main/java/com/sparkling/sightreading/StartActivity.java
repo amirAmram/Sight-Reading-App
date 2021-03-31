@@ -53,14 +53,12 @@ public class StartActivity extends AppCompatActivity {
     public static  final String SPINNER_STRING = "s1";
     public static  final String SPINNER_HIGH_INT = "i2";
     public static  final String SPINNER_LOW_INT = "i3";
-
-
-
-
+    public static  final String LAST_STAGE_NUMBER = "last_stage_number";
+    public static  final String STAR_SCORE = "star_score";
 
 
     RelativeLayout general;
-    boolean acknowledge = false;
+    boolean options_acknowledge = false;
     boolean play_acknowledge = false;
     boolean enable_screen_on;
     boolean enable_night_mode;
@@ -72,8 +70,8 @@ public class StartActivity extends AppCompatActivity {
     int spinner_high_int;
     int spinner_low_int;
     int amount_of_notes_per_game;
-    
-
+    int last_stage_number;
+    int stars_score;
 
 
     private InterstitialAd optionsInterstitialAd;
@@ -109,6 +107,8 @@ public class StartActivity extends AppCompatActivity {
                     intent.putExtra("is_screen_on_enable",enable_screen_on);
                     intent.putExtra("is_night_mode_enable",enable_night_mode);
                     intent.putExtra("is_sound_enable",enable_sound);
+                    intent.putExtra("last_stage_that_played", last_stage_number);
+                    intent.putExtra("star_score",stars_score);
                     startActivity(intent);
 
                 }
@@ -201,7 +201,7 @@ public class StartActivity extends AppCompatActivity {
                 if (learnInterstitialAd.isLoaded()) {
                     learnInterstitialAd.show();
                 } else {
-                    Log.d("TAG", "The interstitial wasn'textView loaded yet.");
+                    Log.d("TAG", "The interstitial wasn't textView loaded yet.");
                     intent = new Intent(StartActivity.this,InfoActivity.class);
                     intent.putExtra("b1",enable_screen_on);
                     intent.putExtra("b2",enable_night_mode);
@@ -264,7 +264,7 @@ public class StartActivity extends AppCompatActivity {
         tTuner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent = new Intent(StartActivity.this,LevelActivity.class);
+                intent = new Intent(StartActivity.this, Tuner.class);
                 intent.putExtra("b1",enable_screen_on);
                 intent.putExtra("b2",enable_night_mode);
                 intent.putExtra("b3",enable_sound);
@@ -298,6 +298,8 @@ public class StartActivity extends AppCompatActivity {
         editor.putInt(SPINNER_HIGH_INT,spinner_high_int);
         editor.putInt(SPINNER_LOW_INT,spinner_low_int);
         editor.putInt(AMOUNT_INT,amount_of_notes_per_game);
+        editor.putInt(LAST_STAGE_NUMBER,last_stage_number);
+        editor.putInt(STAR_SCORE,stars_score);
 
         editor.apply();
     }
@@ -315,6 +317,8 @@ public class StartActivity extends AppCompatActivity {
         spinner_high_int = sharedPreferences.getInt(SPINNER_HIGH_INT,0);
         spinner_low_int = sharedPreferences.getInt(SPINNER_LOW_INT,20);
         amount_of_notes_per_game = sharedPreferences.getInt(AMOUNT_INT,15);
+        last_stage_number = sharedPreferences.getInt(LAST_STAGE_NUMBER,1);
+        stars_score = sharedPreferences.getInt(STAR_SCORE,1);
     }
     public void updateView(){
         Log.d(TAG, "updateView:" + "\n"
@@ -327,7 +331,10 @@ public class StartActivity extends AppCompatActivity {
                 + "spinner_string " + spinner_string + "\n"
                 + "spinner_high_Int " + spinner_high_int + "\n"
                 + "spinner_low_Int " + spinner_low_int  + "\n"
-                + "amount " + amount_of_notes_per_game + "\n");
+                + "amount " + amount_of_notes_per_game + "\n"
+                + "last_stage_number " + last_stage_number + "\n"
+                + "star_scor " + stars_score + "\n"
+        );
 
     }
 
@@ -340,13 +347,15 @@ public class StartActivity extends AppCompatActivity {
         play_acknowledge = intent.getBooleanExtra("play_acknowledge",false);
         if(play_acknowledge){
             seek_int = intent.getIntExtra("seekInt", 60);
+            last_stage_number = intent.getIntExtra("last_stage_that_played",1);
+            stars_score = intent.getIntExtra("star_score",0);
             saveData();
             play_acknowledge = false;
             loadData();
         }
 
-        acknowledge = intent.getBooleanExtra("options_acknowledge",false);
-        if (acknowledge) {
+        options_acknowledge = intent.getBooleanExtra("options_acknowledge",false);
+        if (options_acknowledge) {
             enable_screen_on = intent.getBooleanExtra("is_screen_on", false);
             enable_night_mode = intent.getBooleanExtra("is_night_mode", false);
             enable_sound = intent.getBooleanExtra("enable_sound", false);
@@ -361,7 +370,7 @@ public class StartActivity extends AppCompatActivity {
             updateView();
 
             saveData();
-            acknowledge = false;
+            options_acknowledge = false;
             loadData();
         }
 

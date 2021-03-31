@@ -39,8 +39,10 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import be.tarsos.dsp.AudioDispatcher;
@@ -57,6 +59,9 @@ public class PlayActivity extends AppCompatActivity {
     public static  final String SHARED_PREFES = "sharedPrefs";
     public static  final String GRAPH_SCORE_ARRY = "graph_score";
     public static  final String GRAPH_INDEX = "graph_index";
+    public static  final String HIGHEST_STAGE_NUMBER = "highest_stage_number";
+    public static  final String STAR_COUNTER_ARRAY = "star_counter";
+
 
     String s1 = "C";
     boolean key = false; // false = C, true = F.
@@ -66,6 +71,7 @@ public class PlayActivity extends AppCompatActivity {
 
     int game_level;
     int game_stage;
+    int game_highest_stage;
     int gameSequens[];
     int gameSequensIndex = 0;
     int [] freq ;
@@ -632,23 +638,28 @@ public class PlayActivity extends AppCompatActivity {
 
 
     char redundancy_usage [] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
+    int counting_stars_arr [] = new int[99];
 
 
     String musicNotesData[] = {
         //   note_name-note_frequency-octave|
              //check
-            "Do-0.5-4, Re-0.25-4, Mi-0.125-4, Fa-0.0625-4, Sol-0.03125-4, La-0.0625-4, Si-0.125-4, Do-0.25-4, ",
-/*stage 1*/ "Do-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, ",
-            "Do-0.25-4, Do-0.25-4, Re-0.25-4, Re-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, ",
-            "Do-0.25-4, Re-0.25-4, Mi-0.25-4, Re-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.5-4, ",
-            "Do-0.5-4, Do-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Do-0.5-4, Do-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, ",
-            "Do-0.25-4, Mi-0.25-4, Do-0.25-4, Mi-0.25-4, Re-0.5-4, Re-0.5-4, Do-0.25-4, Mi-0.25-4, Do-0.25-4, Mi-0.25-4, Fa-0.5-4, Mi-0.5-4, ",
-            "Mi-0.25-4, Re-0.25-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, Mi-0.25-4, Mi-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.5-4, Mi-0.25-4, Mi-0.25-4, Mi-0.25-4, ",
-            "Sol-0.25-4, Mi-0.25-4, Mi-0.50-4, Fa-0.25-4, Re-0.25-4, Re-0.50-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, Fa-0.25-4, Sol-0.25-4, Sol-0.25-4, Sol-0.25-4, ",
-            "Fa-0.25-4, Sol-0.50-4, Sol-0.25-4, ",
-            "Sol-0.25-4, Sol-0.125-4, La-0.125-4, Si-0.25-4, Sol-0.25-4, Do-0.25-5, Mi-0.25-5, Re-0.125-5, Do-0.125-5, Si-0.125-4, La-0.125-4, Sol-0.125-4, ",
-};
+             "Do-0.5-4, Re-0.25-4, Mi-0.125-4, Fa-0.0625-4, Sol-0.03125-4, La-0.0625-4, Si-0.125-4, Do-0.25-4, ",
+/*stage 1*/  "Do-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, ",
+/*stage 2*/  "Do-0.25-4, Do-0.25-4, Re-0.25-4, Re-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.25-4, ",
+/*stage 3*/  "Do-0.25-4, Re-0.25-4, Mi-0.25-4, Re-0.25-4, Do-0.25-4, Do-0.25-4, Do-0.5-4, ",
+/*stage 4*/  "Do-0.5-4, Do-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Do-0.5-4, Do-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, Re-0.25-4, ",
+/*stage 5*/  "Do-0.25-4, Mi-0.25-4, Do-0.25-4, Mi-0.25-4, Re-0.5-4, Re-0.5-4, Do-0.25-4, Mi-0.25-4, Do-0.25-4, Mi-0.25-4, Fa-0.5-4, Mi-0.5-4, ",
+/*stage 6*/  "Mi-0.25-4, Re-0.25-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, Mi-0.25-4, Mi-0.5-4, Re-0.25-4, Re-0.25-4, Re-0.5-4, Mi-0.25-4, Mi-0.25-4, Mi-0.25-4, ",
+/*stage 7*/  "Do-0.25-4, Do-0.25-4, Fa-0.125-4, Mi-0.125-4, Re-0.125-4, Do-0.125-4, Do-0.25-4, Do-0.25-4, Fa-0.125-4, Mi-0.125-4, Re-0.125-4, Do-0.125-4, Re-0.25-4, Re-0.25-4, Mi-0.25-4, Re-0.25-4, De-0.5-4, ",
+
+/*stage 8*/  "Do-0.25-4, Re-0.25-4, Mi-0.25-4, Fa-0.25-4, Sol-0.125-4, Mi-0.125-4, Fa-0.125-4, Re-0.125-4, Do-0.5-4, ",
+
+/*stage 9*/  "Do-0.25-4, Do-0.25-4, Do-0.25-4, Sol-0.25-4, La-0.25-4, La-0.25-4, Sol-0.5-4, Mi-0.25-4, Mi-0.25-4, Re-0.25-4, Re-0.25-4, Do-0.5-4, ",
+/*stage 10*/ "Sol-0.25-4, Mi-0.25-4, Mi-0.50-4, Fa-0.25-4, Re-0.25-4, Re-0.50-4, Do-0.25-4, Re-0.25-4, Mi-0.25-4, Fa-0.25-4, Sol-0.25-4, Sol-0.25-4, Sol-0.25-4, ",
+/*stage 11*/ "Fa-0.25-4, Sol-0.50-4, Sol-0.25-4, ",
+/*stage 12*/ "Sol-0.25-4, Sol-0.125-4, La-0.125-4, Si-0.25-4, Sol-0.25-4, Do-0.25-5, Mi-0.25-5, Re-0.125-5, Do-0.125-5, Si-0.125-4, La-0.125-4, Sol-0.125-4, ",
+    };
 
     int id_of_playing_note = -1;
     int note_image_res;
@@ -666,8 +677,8 @@ public class PlayActivity extends AppCompatActivity {
         Log.d(TAG, "PlayActivity STARTED ");
         find();
         back();
-        getData();
         loadData();
+        getData();
         setNightMode();
         setScreenOn();
         setKey();
@@ -678,11 +689,12 @@ public class PlayActivity extends AppCompatActivity {
         start_play_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 title_tv.setVisibility(View.INVISIBLE);
                 time_tv.setVisibility(View.VISIBLE);
                 start_play_button.setVisibility(View.GONE);
                 note_playing_counter = 0;
-                time_tv.setText(note_playing_counter + "/" + amount);
+                time_tv.setText(sum + "/" + amount);
 
                 permission();
                 tuner();
@@ -713,11 +725,11 @@ public class PlayActivity extends AppCompatActivity {
         time_tv = findViewById(R.id.time_left);
         start_play_button = findViewById(R.id.btn);
 
+        Arrays.fill(counting_stars_arr, 0); // fill array zeros
     }
 
     public void start_notes(){
         if(!out_is_clicked) {
-
 
             id_of_playing_note = musicNoteList.get(note_playing_counter).getNote_display_id();
             note_image_res = musicNoteList.get(note_playing_counter).getNote_image();
@@ -737,11 +749,6 @@ public class PlayActivity extends AppCompatActivity {
                     note_image.setVisibility(View.VISIBLE);
                     startTranslation(note_image);
                 } else {
-
-                    Log.d(TAG, " \n  start_notes:  id = " + id_of_playing_note
-                            + "\n  note_image_res = " + note_image_res
-                            + "\n  note_duration = " + note_duration + "\n"
-                            + "\n  redundancy_usage = " + redundancy_usage[id_of_playing_note]);
 
                     set_redundancy_image_layout_array(id_of_playing_note);
                     note_layout = findViewById(layout_images[id_of_playing_note]);
@@ -916,14 +923,19 @@ public class PlayActivity extends AppCompatActivity {
 
                 start_play_button.setVisibility(View.GONE);
                 note_playing_counter = 0;
-                time_tv.setText(0 + "/" + amount);
+
 
                 permission();
                 tuner();
-
-                findNotes();
-                game_stage++;
                 musicNoteSetup(game_stage);
+                findNotes();
+
+                game_stage++;
+                if(game_stage > game_highest_stage){
+                    game_highest_stage = game_stage;
+                    saveData();
+                }
+
 
                 delay(1000);
                 time_tv.setVisibility(View.VISIBLE);
@@ -932,6 +944,7 @@ public class PlayActivity extends AppCompatActivity {
                 dialog.dismiss();
                 doReMi_buttons_on_play_screen_layout.setVisibility(View.GONE);
 
+                time_tv.setText(sum + "/" + amount);
 
             }
         });
@@ -945,6 +958,8 @@ public class PlayActivity extends AppCompatActivity {
         });
 
         alertDialog.show();
+
+
     }
 
 
@@ -960,8 +975,8 @@ public class PlayActivity extends AppCompatActivity {
         is_sound_enable = intent.getBooleanExtra("is_sound_enable", false);
         game_level = intent.getIntExtra("game_level",1); // easy hard master...
         game_stage = intent.getIntExtra("stage",1) +1;     // in the level part, stage num(+1 because start from 1 not 0)
-       // gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]); // sec of notes
-      //  amount = gameSequens.length;
+        // gameSequens = convertStringToIntArray(NOTES_SEQUENCE[gameSequensIndex][game_stage]); // sec of notes
+        //  amount = gameSequens.length;
 
      }
 
@@ -1058,7 +1073,9 @@ public class PlayActivity extends AppCompatActivity {
 
     public void passData(){
         Intent intent = new Intent(this,StartActivity.class);
+        intent.putExtra("last_stage_that_played", game_highest_stage - 1);
         intent.putExtra("play_acknowledge",true);
+        intent.putExtra("star_score", sumArray(counting_stars_arr));
         startActivity(intent);
     }
 
@@ -1066,25 +1083,36 @@ public class PlayActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(points);
-        editor.putString(GRAPH_SCORE_ARRY,json);
+        String json1 = gson.toJson(points);
+        String json2 = gson.toJson(counting_stars_arr);
+        editor.putString(GRAPH_SCORE_ARRY,json1);
+        editor.putString(STAR_COUNTER_ARRAY,json2);
         editor.putInt(GRAPH_INDEX, graph_index);
+        editor.putInt(HIGHEST_STAGE_NUMBER, game_stage);
         editor.apply();
     }
 
     public void loadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFES, MODE_PRIVATE);
         graph_index = sharedPreferences.getInt(GRAPH_INDEX,1);
-
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(GRAPH_SCORE_ARRY,null);
-        Type type = new TypeToken<DataPoint[]>(){}.getType();
-        points = gson.fromJson(json,type);
+        game_highest_stage = sharedPreferences.getInt(HIGHEST_STAGE_NUMBER,1);
+        Gson gson1 = new Gson();
+        String json1 = sharedPreferences.getString(GRAPH_SCORE_ARRY,null);
+        Type type1 = new TypeToken<DataPoint[]>(){}.getType();
+        points = gson1.fromJson(json1,type1);
         if (points == null){
             points = new DataPoint[100];
             for (int i = 0; i < points.length; i++) {
                 points[i] = new DataPoint(i, 0);
             }
+        }
+        Gson gson2 = new Gson();
+        String json2 = sharedPreferences.getString(STAR_COUNTER_ARRAY,null);
+        Type type2 = new TypeToken<int[]>(){}.getType();
+        counting_stars_arr = gson2.fromJson(json2,type2);
+        if (counting_stars_arr == null){
+            counting_stars_arr = new int[99];
+            Arrays.fill(counting_stars_arr, 0); // fill array zeros
         }
 //          Log.d(TAG, "loadData: " + graph_index + "+++++++++++++" + points[0] + points[1] + points[2] + points[3] + points[4] + points[5] );
 
@@ -1149,6 +1177,7 @@ public class PlayActivity extends AppCompatActivity {
 
                 }
                 sum = 0;
+
             }
         }.start();
     }
@@ -1161,7 +1190,6 @@ public class PlayActivity extends AppCompatActivity {
         v = inflater.inflate(R.layout.graph_layout,null);
 
         GraphView graph = (GraphView) v.findViewById(R.id.graph);
-
 
 
         for (int i = graph_index; i < points.length; i++) {
@@ -1195,7 +1223,7 @@ public class PlayActivity extends AppCompatActivity {
         graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
         graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
 
-        if (graph_index >= 999){
+        if (graph_index >= 98){
             graph_index = 0;
             saveData();
         }
@@ -1212,20 +1240,39 @@ public class PlayActivity extends AppCompatActivity {
             star1.setImageResource(R.drawable.star_full);
             star2.setImageResource(R.drawable.star_full);
             star3.setImageResource(R.drawable.star_full);
+
+            if (counting_stars_arr[game_stage - 1] < 3) {counting_stars_arr[game_stage - 1] = 3;}
+
         } else if(percent > 78){
             star1.setImageResource(R.drawable.star_full);
             star2.setImageResource(R.drawable.star_full);
             star3.setImageResource(R.drawable.star_half);
-        } else if(percent > 66){
+
+            if (counting_stars_arr[game_stage - 1] < 2) {counting_stars_arr[game_stage - 1] = 2;}
+
+        } else if(percent >= 66){
             star1.setImageResource(R.drawable.star_full);
             star2.setImageResource(R.drawable.star_full);
             star3.setImageResource(R.drawable.star_empty);
+
+            if (counting_stars_arr[game_stage - 1] < 2) {counting_stars_arr[game_stage - 1] = 2;}
+
         } else if(percent > 48){
             star1.setImageResource(R.drawable.star_full);
             star2.setImageResource(R.drawable.star_half);
             star3.setImageResource(R.drawable.star_empty);
-        }else if(percent > 33){
+
+            if (counting_stars_arr[game_stage - 1] < 1){ counting_stars_arr[game_stage - 1] = 1;}
+
+        }else if(percent >= 33) {
             star1.setImageResource(R.drawable.star_full);
+            star2.setImageResource(R.drawable.star_empty);
+            star3.setImageResource(R.drawable.star_empty);
+
+            if (counting_stars_arr[game_stage - 1] < 1){ counting_stars_arr[game_stage - 1] = 1;}
+
+        }else if(percent == 0){
+            star1.setImageResource(R.drawable.star_empty);
             star2.setImageResource(R.drawable.star_empty);
             star3.setImageResource(R.drawable.star_empty);
         }else{
@@ -1233,6 +1280,8 @@ public class PlayActivity extends AppCompatActivity {
             star2.setImageResource(R.drawable.star_empty);
             star3.setImageResource(R.drawable.star_empty);
         }
+
+        Log.d(TAG, "setStarsRate:    star Array ========= " + counting_stars_arr[0] + " "+ counting_stars_arr[1] + " "+ counting_stars_arr[2] + " "+ counting_stars_arr[3] + " ");
 
 
     }
@@ -1270,7 +1319,7 @@ public class PlayActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     Log.d(TAG, "onRequestPermissionsResult:  --------------happened!---------------");
-                    if(checkIfAlreadyhavePermission()){
+                    if(checkIfAlreadyHavePermission()){
                         AudioDispatcher dispatcher =
                                 AudioDispatcherFactory.fromDefaultMicrophone(22050,1024,0);
 
@@ -1304,7 +1353,7 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkIfAlreadyhavePermission() {
+    private boolean checkIfAlreadyHavePermission() {
         int result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
         if (result == PackageManager.PERMISSION_GRANTED) {
             return true;
@@ -1336,7 +1385,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
     public void tuner(){
-        if(checkIfAlreadyhavePermission()){
+        if(checkIfAlreadyHavePermission()){
             AudioDispatcher dispatcher =
                     AudioDispatcherFactory.fromDefaultMicrophone(22050,1024,0);
 
@@ -1376,10 +1425,10 @@ public class PlayActivity extends AppCompatActivity {
 
         if (stage < musicNotesData.length) {
             musicNoteList = new ArrayList<>();
-            String note_splits_data[] = musicNotesData[stage].split(", ");
+            String[] note_splits_data = musicNotesData[stage].split(", ");
 
             for (int i = 0; i < note_splits_data.length; i++) {
-                String sub_temp_arr[] = note_splits_data[i].split("-");
+                String[] sub_temp_arr = note_splits_data[i].split("-");
                 MusicNote note = new MusicNote(
                         sub_temp_arr[0],
                         Double.parseDouble(sub_temp_arr[1]),
@@ -1461,5 +1510,13 @@ public class PlayActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public int sumArray(int [] array){
+        int sum = 0;
+        for (int i1 : array) {
+            sum += i1;
+        }
+        return sum;
     }
 }

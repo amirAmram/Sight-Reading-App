@@ -28,6 +28,14 @@ public class MusicNote {
             R.drawable.thirty_second_note //0.03125
     };
 
+    int rest_images[] = {
+            R.drawable.rest_whole,
+            R.drawable.rest_half,
+            R.drawable.rest_quarter,
+            R.drawable.rest_eighth,
+            R.drawable.rest_sixteenth
+    };
+
     private String note_name = "Fa";
     private int octave_num = 3;
     private int note_height = 0;
@@ -57,9 +65,8 @@ public class MusicNote {
                         Log.d(TAG, "setup: values:\n\t index: " + i + " \n\t note_display_ids[1][i]" +note_display_ids[1][i]);
                         note_display_id = note_display_ids[1][i] + (7 * (octave_num - 4)); //because minimal the octave num for the displays notes is 3 and this one abouve
                     }
-                }
+                }break;
 
-                break;
             }
         }
 
@@ -67,18 +74,24 @@ public class MusicNote {
             if (note_duration == note_durations[i]){
                 note_image = note_images[i];
                 break;
+
+            }else if(note_name.equals("Rest")) {
+                if (note_duration == 1){
+                    note_image =  R.drawable.rest_whole;
+                    break;
+                }else if (note_duration == 0.5){
+                    note_image =  R.drawable.rest_half;
+                    break;
+                }else if (note_duration == 0.25){
+                    note_image =  R.drawable.rest_quarter;
+                    break;
+                }else if (note_duration == 125){
+                    note_image =  R.drawable.sixteenth_note;
+                    break;
+                }
             }
         }
 
-//        for (int imageView = 0; imageView < NUMBER_OF_NOTES; imageView += 2) {
-//            if (octave_num == 3 && imageView > 2){
-//                note_display_id = imageView - 3; // because the first note is f3
-//            }else if(octave_num > 3 ){
-//                note_display_id = (imageView + 4) + (7 * octave_num - 4); // (imageView + 4) because imageView start from the 4th num F3 to C4
-//            }
-//            Log.d(TAG, "setup:       note_display_id = " + note_display_id);
-//
-//        }
     }
 
     public int getNote_octave_num(){ return octave_num; }
