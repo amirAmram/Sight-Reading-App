@@ -190,7 +190,6 @@ public class PlayActivity extends AppCompatActivity {
     };
 
 
-
     /**
      *             174,  //f0
      *             185,
@@ -371,44 +370,6 @@ public class PlayActivity extends AppCompatActivity {
             1244, //d#3
             1319, //e3
     };
-
-    /**
-     *             174,  //f0
-     *             185,
-     *             196,  //g0
-     *             207,
-     *             220,  //a0
-     *             233,
-     *             246,  //b0
-     *             261,  //c1
-     *             277,
-     *             293,  //d1
-     *             311,
-     *             330,  //e1
-     *             350,  //f1
-     *             369,
-     *             392,  //g1
-     *             415,
-     *             440,  //a1
-     *             466,
-     *             494,  //b1
-     *             523,  //c2
-     *             544,
-     *             587,  //d2
-     *             622,
-     *             659,  //e2
-     *             698,  //f2
-     *             740,
-     *             784,  //g2
-     *             830,
-     *             880,  //a2
-     *             932,
-     *             987,  //b2
-     *             1047, //c3
-     *             1108,
-     *             1175, //d3
-     *             1244,
-     *             1319, //e3 */
 
     int cnt = 0;
     int sum = 0;
@@ -1184,5 +1145,10 @@ public class PlayActivity extends AppCompatActivity {
         return iArr;
     }
 
+
+    public void note(){
+        MusicNote note1 = new MusicNote("F_0", 0 , 0.25, 175.0);
+
+    }
 
 }
